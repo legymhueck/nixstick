@@ -41,7 +41,9 @@ efi-traces --remove            # delete them (asks, sudo)
 , cowsay hi                    # run a program from nixpkgs once without installing it (comma)
 ```
 
-Super+L locks the screen at once.
+Super+L locks the screen at once. With several monitors, Super+Alt+Left/Right
+moves the focused window to the neighbouring monitor, Alt+Shift+Left/Right moves
+the focus there.
 
 ## Coding agents and editor
 

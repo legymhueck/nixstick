@@ -326,6 +326,11 @@ in
         "SUPER+SHIFT,Right,exchange_client,right"
         "SUPER+SHIFT,Up,exchange_client,up"
         "SUPER+SHIFT,Down,exchange_client,down"
+        # Multiple monitors: move the window / the focus to the neighbouring one
+        "SUPER+ALT,Left,tagmon,left"
+        "SUPER+ALT,Right,tagmon,right"
+        "ALT+SHIFT,Left,focusmon,left"
+        "ALT+SHIFT,Right,focusmon,right"
         "NONE,XF86AudioRaiseVolume,spawn,noctalia msg volume-up"
         "NONE,XF86AudioLowerVolume,spawn,noctalia msg volume-down"
         "NONE,XF86AudioMute,spawn,noctalia msg volume-mute"
