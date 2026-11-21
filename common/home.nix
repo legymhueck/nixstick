@@ -1,10 +1,12 @@
 {
+  inputs,
   vars,
   ...
 }:
 
 {
   imports = [
+    inputs.nix-index-database.homeModules.nix-index
     ./firefox.nix
     ./apps.nix
     ./neovim.nix
@@ -41,7 +43,7 @@
     shellAliases = {
       # rebuild: nh finds the flake via programs.nh.flake (~/nixos)
       rebuild = "nh os switch";
-      update = "nh os switch --update";
+      update = "lock-sync"; # update inputs, pin nixpkgs + Mango to the main repo's cache, switch
       l = "eza -al --icons";
       battery = "acpi --battery --details";
       bigFiles = "du -ahx . | sort -h | nl";
@@ -119,6 +121,11 @@
     settings = builtins.fromTOML (builtins.readFile ../dotfiles/config/.config/starship.toml);
   };
   programs.zoxide.enable = true;
+  # `, <program>` runs a program from nixpkgs once without installing it;
+  # command-not-found names the package. Prebuilt database (nix-index-database
+  # input), nothing is indexed on the stick.
+  programs.nix-index.enable = true;
+  programs.nix-index-database.comma.enable = true;
   programs.eza = {
     enable = true;
     icons = "auto";

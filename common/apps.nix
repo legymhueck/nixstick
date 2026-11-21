@@ -29,10 +29,6 @@
 
     # --- desktop applications ---
     pwvucontrol # audio devices and levels (headsets on foreign PCs)
-    # Second browser, only for the Claude browser agent (Claude in Chrome
-    # needs a Chromium engine; it does not run in Firefox). No Web Store:
-    # install the extension by hand. Firefox stays the default.
-    ungoogled-chromium
 
     # --- coding agents (claude-code and github-copilot-cli are unfree) ---
     claude-code
@@ -68,6 +64,20 @@
     shfmt
     statix
   ];
+
+  # Second browser, only for the Claude browser agent (Claude in Chrome needs a
+  # Chromium engine; it does not run in Firefox). No Web Store: install the
+  # extension by hand. Firefox stays the default.
+  programs.chromium = {
+    enable = true;
+    package = pkgs.ungoogled-chromium;
+    commandLineArgs = [
+      # Saved passwords and cookies' key in gnome-keyring (nixos-mango/configuration.nix).
+      "--password-store=gnome-libsecret"
+      # Spare the flash: the cache lives in RAM (/tmp is a tmpfs), like Firefox's.
+      "--disk-cache-dir=/tmp/chromium-cache"
+    ];
+  };
 
   # VSCodium (free build of VS Code) with the extensions for both repos; only
   # the Claude extension is unfree.

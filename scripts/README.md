@@ -8,6 +8,9 @@ commands and aliases).
 
 | Command | Purpose |
 | --- | --- |
+| `efi-traces` | List (or `--remove`) traces of earlier boots in a PC's firmware |
 | `format-and-mount` | Format and mount an encrypted LUKS + Btrfs partition |
+| `lock-sync` | Update inputs, pin nixpkgs + Mango to the main repo's lock (cached Mango), switch |
+| `luks-header-backup` | Save the stick's LUKS header to a folder |
 | `ssh-permissions` | Reset permissions in `~/.ssh` (700/600/644) |
 | `update-check` | Show which flake inputs have newer upstream commits (read-only) |

@@ -21,6 +21,11 @@
       url = "github:noctalia-dev/community-plugins";
       flake = false;
     };
+    # Prebuilt nix-index database for `, <program>` (comma) and command-not-found.
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -35,8 +40,16 @@
       vars = import ./common/vars.nix;
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-      hardwareFile = ./nixos-mango/hardware-configuration.nix;
-      hasHardware = builtins.pathExists hardwareFile;
+      # One directory per installation: hosts/<hostname>/ holds the generated
+      # hardware-configuration.nix and optionally host.nix (settings for that
+      # stick only). install.sh creates it, so installing a second stick never
+      # touches the files of the first one.
+      hostNames = builtins.attrNames (
+        lib.filterAttrs (
+          name: type:
+          type == "directory" && builtins.pathExists (./hosts + "/${name}/hardware-configuration.nix")
+        ) (builtins.readDir ./hosts)
+      );
 
       # Only for the `-eval` output: stands in for the generated hardware
       # module so the checkout evaluates without it (CI, `nix flake check`).
@@ -52,14 +65,23 @@
 
       mkSystem =
         {
-          evalOnly ? false,
+          # null: the evaluation twin (no hardware module, name vars.project).
+          host ? null,
         }:
+        let
+          hostDir = ./hosts + "/${host}";
+          hostModule = hostDir + "/host.nix";
+        in
         lib.nixosSystem {
           inherit system;
           specialArgs = { inherit inputs vars; };
           modules = [
             ./nixos-mango/configuration.nix
-            (if evalOnly then evaluationHardware else hardwareFile)
+            (if host == null then evaluationHardware else hostDir + "/hardware-configuration.nix")
+            {
+              # `nh os switch` / `nixos-rebuild --flake .` pick the entry by hostname.
+              networking.hostName = if host == null then vars.project else host;
+            }
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -70,7 +92,8 @@
                 users.${vars.user} = ./nixos-mango/home.nix;
               };
             }
-          ];
+          ]
+          ++ lib.optional (host != null && builtins.pathExists hostModule) hostModule;
         };
 
     in
@@ -78,13 +101,11 @@
       formatter.${system} = pkgs.nixfmt-tree;
 
       nixosConfigurations =
-        # The real configuration exists only where the generated hardware
-        # module is present (the committed one belongs to the current machine).
-        # `nixos-rebuild --flake .` / `nh os switch` look up the hostname.
-        lib.optionalAttrs hasHardware { ${vars.host} = mkSystem { }; }
+        # One real configuration per installed stick in hosts/.
+        lib.genAttrs hostNames (host: mkSystem { inherit host; })
         # Evaluation-only twin for CI and `nix eval`; never deploy this.
         // {
-          "${vars.host}-eval" = mkSystem { evalOnly = true; };
+          "${vars.project}-eval" = mkSystem { };
         };
 
       # Tools for working on this repository: `nix develop`.

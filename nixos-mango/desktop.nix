@@ -24,13 +24,26 @@ in
   # - adwaita: GTK icons; breeze-dark: the icon theme Noctalia resolves
   #   launcher icons from (set via gtk.iconTheme below)
   # - trash-cli: free space trash for the file manager
-  # - udiskie: auto-mount USB drives
   home.packages = with pkgs; [
     adwaita-icon-theme
     kdePackages.breeze-icons
     trash-cli
-    udiskie
   ];
+
+  # Drives: udiskie in the Noctalia tray (appindicator). Clicking it mounts,
+  # unlocks (LUKS: passphrase dialog), unmounts and ejects a USB drive.
+  # Nothing is mounted automatically, and the PC's internal disks are not
+  # shown at all (common/traceless.nix).
+  services.udiskie = {
+    enable = true;
+    automount = false;
+    notify = true;
+    tray = "auto";
+    settings.program_options = {
+      appindicator = true;
+      file_manager = "doublecmd";
+    };
+  };
 
   # Let Noctalia generate GTK and Qt theme/config files instead of pinning
   # them from dotfiles so the build is self-contained. Keep only the
@@ -86,6 +99,9 @@ in
       shell.animation.enabled = false;
       lockscreen.transition = [ ];
       lockscreen.fingerprint = true;
+      # Enter with an empty field starts PAM, which then waits for a touch of
+      # the YubiKey (common/yubikey.nix); without a key the empty password fails.
+      lockscreen.allow_empty_password = true;
 
       bar.default = {
         background_opacity = 1.0;
@@ -193,6 +209,7 @@ in
           "gtk3"
           "gtk4"
           "kcolorscheme"
+          "mango"
           "qt"
         ];
       };
@@ -235,14 +252,6 @@ in
       unfocused_opacity = 1.0;
       scratchpad_width_ratio = 0.8;
       scratchpad_height_ratio = 0.9;
-      root_color = "0x201b14ff";
-      border_color = "0x444444ff";
-      focus_color = "0x47add6ff";
-      maximized_screen_color = "0x47add6ff";
-      urgent_color = "0xad401fff";
-      scratchpad_color = "0x516c93ff";
-      global_color = "0xb153a7ff";
-      overlay_color = "0x14a57cff";
       cursor_theme = cursorTheme;
       cursor_size = cursorSize;
       blur = 0;
@@ -286,6 +295,8 @@ in
         "SUPER+SHIFT,w,spawn,noctalia msg panel-toggle noctalia/wallhaven:browser"
         "SUPER+SHIFT,c,spawn,noctalia msg panel-toggle clipboard"
         "SUPER+SHIFT,q,spawn,noctalia msg panel-toggle session"
+        # Lock at once (leaving a foreign PC for a moment)
+        "SUPER,l,spawn,noctalia msg session lock"
         "SUPER+SHIFT,b,spawn,noctalia msg bar-toggle"
         "SUPER,p,spawn,noctalia msg screenshot-region"
         "SUPER+SHIFT,p,spawn,noctalia msg screenshot-fullscreen"
@@ -332,5 +343,15 @@ in
         ]
       ) (lib.range 1 9);
     };
+
+    # Colors (borders, focus, urgent, ...) follow the wallpaper: Noctalia's
+    # "mango" template writes them to ~/.config/mango/noctalia.conf and reloads
+    # Mango. Its hook would append this line to config.conf, which Home Manager
+    # links read-only, so it is set here (the hook finds it and skips). Before
+    # Noctalia's first run the file is missing: Mango logs that and uses its
+    # default colors. No color options in the settings above.
+    extraConfig = ''
+      source = ~/.config/mango/noctalia.conf
+    '';
   };
 }

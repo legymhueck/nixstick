@@ -17,6 +17,20 @@ in
       cryptsetup
       util-linux
     ])
+    (mkScript "efi-traces" [
+      e2fsprogs # chattr
+      efibootmgr
+      util-linux # mount
+    ])
+    (mkScript "lock-sync" [
+      gh
+      jq
+      nh
+    ])
+    (mkScript "luks-header-backup" [
+      cryptsetup
+      gawk
+    ])
     (mkScript "ssh-permissions" [ findutils ])
     (mkScript "update-check" [
       curl

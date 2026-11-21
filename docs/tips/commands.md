@@ -7,7 +7,8 @@ Every command below has `--help`. Own commands come from `scripts/` (see
 
 ```sh
 rebuild                        # nh os switch: apply the configuration
-update                         # nh os switch --update: update inputs, then apply
+update                         # lock-sync: update inputs, pin nixpkgs + Mango to the main repo (cached), apply
+lock-sync --no-switch          # the same, only flake.lock
 nh os test                     # try a configuration without a boot entry
 nh clean all --keep 5          # remove old generations now (also runs weekly)
 nix flake check                # lint and evaluate (in ~/nixos)
@@ -29,7 +30,18 @@ mnt /dev/sdb1                  # mount a USB partition (udisksctl)
 format-and-mount               # WIPE a drive, set it up as LUKS + Btrfs, mount it
 umount-drive                   # unmount ~/mount and close the "micleh" LUKS mapper
 partuuid                       # list partitions by PARTUUID
+luks-header-backup ~/mount     # save this stick's LUKS header (once, to an encrypted place)
 ```
+
+## Foreign PCs
+
+```sh
+efi-traces                     # does this PC's firmware show traces of a boot? (read-only)
+efi-traces --remove            # delete them (asks, sudo)
+, cowsay hi                    # run a program from nixpkgs once without installing it (comma)
+```
+
+Super+L locks the screen at once.
 
 ## Coding agents and editor
 
@@ -54,7 +66,7 @@ bscrub && bscrubStatus         # check the file system for errors
 ```sh
 create-ssh-key                 # ssh-keygen -t ed25519
 ssh-permissions                # fix permissions in ~/.ssh
-fingerprint                    # enroll a fingerprint (fprintd)
+fingerprint                    # enroll a fingerprint (fprintd) -- only on your own devices
 ```
 
 ## Everyday helpers

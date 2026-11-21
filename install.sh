@@ -3,10 +3,14 @@
 #
 # Run as root on the live ISO, from a complete repository checkout (it is copied, with .git, to ~/nixos):
 #
-#   sudo ./install.sh /dev/sdb         # the target USB stick (MangoWM + Noctalia)
+#   sudo ./install.sh /dev/sdb nixstick2   # target USB stick, hostname (MangoWM + Noctalia)
+#
+# The hostname names the new directory hosts/<hostname>/ (generated hardware
+# module). It must not exist yet: every stick has its own, so pushing and
+# pulling never replaces the files of another stick.
 #
 # The result boots on any x86_64 UEFI PC (common/hardware-portable.nix) and
-# never writes boot entries into the PC's firmware.
+# leaves nothing in the PC's firmware (common/traceless.nix).
 #
 # This WIPES the whole disk. You are asked once for a password. It is used for
 # the LUKS passphrase and the login of user "m" (root login is disabled).
@@ -16,6 +20,7 @@ set -euo pipefail
 exec > >(tee -a /tmp/install.log) 2>&1 # keep a log of the install run
 
 DISK="${1:-}"
+HOST="${2:-}"
 PW="${PW:-}"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CFG=/mnt/etc/nixos # temporary location during the install, moved to ~/nixos at the end
@@ -46,11 +51,14 @@ trap cleanup EXIT
 
 # ---------- preflight (nothing is touched yet) ----------
 [[ $EUID -eq 0 ]] || die "run as root (sudo -i first)"
-[[ -n $DISK && -b $DISK ]] || die "usage: $0 <disk>   e.g. $0 /dev/sdb"
+[[ -n $DISK && -b $DISK && -n $HOST ]] || die "usage: $0 <disk> <hostname>   e.g. $0 /dev/sdb nixstick2"
+[[ $HOST =~ ^[a-z][a-z0-9-]{0,62}$ ]] || die "hostname '$HOST': lowercase letters, digits and -, starting with a letter"
+[[ ! -e $REPO_ROOT/hosts/$HOST ]] ||
+  die "hosts/$HOST exists already (another stick). Pick a new hostname, or delete hosts/$HOST if that stick is gone."
 [[ -d /sys/firmware/efi ]] || die "not booted in UEFI mode"
-# Host and user come from common/vars.nix, the single source for all modules.
+# Project and user come from common/vars.nix, the single source for all modules.
 vars_get() { nix-instantiate --eval -E "(import (/. + \"$REPO_ROOT/common/vars.nix\")).$1" | tr -d '"'; }
-HOST=$(vars_get host)
+PROJECT=$(vars_get project)
 USER_NAME=$(vars_get user)
 # Refuse a disk with mounted partitions (that is usually the installer USB stick).
 if lsblk -nro MOUNTPOINTS "$DISK" | grep -q .; then
@@ -75,7 +83,7 @@ nix config show | grep -q flakes || die "flakes not enabled in nix config"
 # broken files in the checkout. path: sees every file, tracked or not, just
 # like the copy that is installed later. The -eval twin needs no hardware module.
 step "Checking the configuration"
-nix eval --raw "path:$REPO_ROOT#nixosConfigurations.$HOST-eval.config.system.build.toplevel.drvPath" >/dev/null ||
+nix eval --raw "path:$REPO_ROOT#nixosConfigurations.$PROJECT-eval.config.system.build.toplevel.drvPath" >/dev/null ||
   die "the configuration in $REPO_ROOT does not evaluate (incomplete checkout?)"
 
 lsblk "$DISK"
@@ -178,9 +186,9 @@ rm -f -- "$CFG/configuration.nix"
 # Copy the complete checkout (including .git, README, docs, wallpapers, ...) so
 # ~/nixos is a working clone and nothing needs to be kept in sync by hand.
 cp -a --no-preserve=ownership "$REPO_ROOT/." "$CFG/"
-# The generated hardware config replaces the one from the repo (another machine).
-rm -f -- "$CFG/nixos-mango/hardware-configuration.nix"
-mv "$HW_TMP" "$CFG/nixos-mango/hardware-configuration.nix"
+# This stick's own directory; the other hosts/ directories stay untouched.
+mkdir -p "$CFG/hosts/$HOST"
+mv "$HW_TMP" "$CFG/hosts/$HOST/hardware-configuration.nix"
 
 if ! grep -q "stateVersion = \"$GEN_SV\"" "$CFG/common/base.nix"; then
   echo "WARNING: generated stateVersion is $GEN_SV but common/base.nix sets something else." >&2
@@ -190,7 +198,7 @@ fi
 cd "$CFG"
 [[ -d .git ]] || git init -q # a zip download has no history
 git add -A                   # flakes ignore untracked files
-git -c user.name="Installer" -c user.email="installer@localhost" commit -q -m "Installation: generated hardware configuration"
+git -c user.name="Installer" -c user.email="installer@localhost" commit -q -m "hosts/$HOST: install $HOST (generated hardware configuration)"
 
 # ---------- install ----------
 step "nixos-install (this takes a while)"
