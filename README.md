@@ -24,8 +24,9 @@ Boot the NixOS minimal ISO (UEFI), connect to the network (`nmtui`), then:
 ```sh
 # gh is NOT on the minimal ISO ("gh: command not found"): load it first.
 nix-shell -p gh git                   # gh and git for the live system only (RAM), takes a minute
-gh auth login                         # GitHub.com > HTTPS > Login with a web browser:
-                                      # open github.com/login/device on a phone, enter the code
+gh auth login -h github.com -p https -w   # login by code, no menus; works on a bare tty:
+                                      # Enter (no browser opens), open github.com/login/device
+                                      # on a phone, enter the code; Git credentials: Y
 gh repo clone legymhueck/nixstick nixos
 cd nixos
 lsblk                                 # identify the target disk
