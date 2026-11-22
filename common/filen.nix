@@ -29,7 +29,7 @@ in
       Description = "Filen sync of ~/filen (filen-sync on/off)";
       ConditionPathExists = [
         "${dataDir}/sync-enabled"
-        "${dataDir}/.credentials"
+        "${dataDir}/.filen-cli-keep-me-logged-in"
       ];
       # Keep retrying while offline; never give up.
       StartLimitIntervalSec = 0;

@@ -42,7 +42,7 @@ filen
 
 Enter your Filen email, password and, if enabled, the 2FA code. Answer *yes*
 when it asks whether to save the credentials. They are stored in
-`~/.config/filen-cli/.credentials` on the encrypted stick. Leave the
+`~/.config/filen-cli/.filen-cli-keep-me-logged-in` on the encrypted stick. Leave the
 interactive prompt with `exit`.
 
 == 2. Switch on, switch off

@@ -19,7 +19,7 @@ USAGE
 
 case "${1:-status}" in
   on)
-    if [[ ! -e $data/.credentials ]]; then
+    if [[ ! -e $data/.filen-cli-keep-me-logged-in ]]; then
       echo "Not logged in: run 'filen' once, log in and save the credentials." >&2
       exit 1
     fi
