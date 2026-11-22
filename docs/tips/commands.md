@@ -33,6 +33,23 @@ partuuid                       # list partitions by PARTUUID
 luks-header-backup ~/mount     # save this stick's LUKS header (once, to an encrypted place)
 ```
 
+### Stick speed
+
+A USB stick has one I/O queue (queue depth 1 with `usb-storage`). A large
+write, e.g. a rebuild, makes the whole desktop wait. `ionice -c3` (class
+"idle") gives a command disk time only when nothing else wants it, so the
+desktop stays responsive and the command takes a little longer.
+
+```sh
+ionice -c3 nh os switch        # rebuild at idle I/O priority (works with any command, e.g. update)
+lsblk -o NAME,SIZE,TRAN,MODEL,MOUNTPOINTS   # which drive is which, USB or internal
+lsusb -t                       # USB link speed per device (480M = USB 2, 5000M = USB 3) and driver (uas is faster than usb-storage)
+cat /sys/block/sda/device/queue_depth       # 1 = one command at a time
+# random 4k reads, read-only, ~20 s; compare sticks (replace sda)
+sudo "$(nix build --no-link --print-out-paths nixpkgs#fio)/bin/fio" --name=r --filename=/dev/sda \
+  --rw=randread --bs=4k --direct=1 --runtime=20 --time_based --readonly
+```
+
 ## Foreign PCs
 
 ```sh
