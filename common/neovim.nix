@@ -49,7 +49,6 @@ in
       blink-cmp
       conform-nvim
       nvim-lint
-      typst-preview-nvim
       render-markdown-nvim
 
       # AI (Claude Code and opencode run in a terminal split and talk to nvim)

@@ -24,9 +24,6 @@ require("gitsigns").setup()
 
 -- latex off: no latex grammar and no utftex/latex2text converter installed.
 require("render-markdown").setup({ enabled = false, latex = { enabled = false } }) -- toggled with <leader>rp
--- nixpkgs patches in tinymist and websocat; the default root is the folder
--- with .git, so /_vorlagen/typst/schule.typ resolves.
-require("typst-preview").setup()
 
 -- Tree-sitter: grammars come prebuilt from nixpkgs; start highlighting where one exists.
 vim.api.nvim_create_autocmd("FileType", {

@@ -69,7 +69,7 @@ shows them all in the overview.
 PDFs and EPUBs open in zathura (`xdg-open`, Double Commander, and Neovim's
 picker or explorer); Firefox is still there for filling in forms. In Neovim,
 `<leader>sp` lists all PDFs (git-ignored exports too), `<leader>ro` opens the PDF that `<leader>re` exported; zathura reloads it on
-every new export. Exports land in `out/` next to the source (git-ignored).
+every new export. In a `.typ` file, `<leader>rp` runs `typst watch` and opens the PDF in zathura: it updates on every save. Exports land in `out/` next to the source (git-ignored).
 Printable cheat sheet: `docs/tips/zathura.typ`.
 
 ```sh

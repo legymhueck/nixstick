@@ -95,6 +95,7 @@
 == From Neovim
 
 #keys(
+  [`<leader>rp`], [Typst: live PDF in zathura, updated on every save (toggle)],
   [`<leader>re`], [export PDF (Typst, Marp, Markdown) to `out/` next to the file],
   [`<leader>ro`], [open that PDF in zathura; export again and the window updates],
   [`<leader>sp`], [pick from all PDFs in the folder (git-ignored exports too)],
@@ -106,18 +107,17 @@
 
 *A. Live preview while writing*
 + Open the `.typ` file, press `<leader>rp`.
-+ The browser shows the document and updates as you type (no saving needed);
-  clicking in it jumps to that spot in the source.
-+ `<leader>rp` again turns it off.
++ `typst watch` writes `out/<name>.pdf` and zathura opens it; put the windows
+  side by side (`Super+Alt+Left/Right` moves a window to the other monitor).
++ Save (`:w`): zathura reloads and keeps your page. Compile errors appear as
+  a notification in Neovim; the last good PDF stays on screen.
++ `<leader>rp` again (or quitting Neovim) stops the watch; zathura stays open.
 
-*B. The real PDF in zathura* (print layout, the file itself)
-+ `<leader>re` writes `out/<name>.pdf`.
-+ `<leader>ro` opens it in zathura; put the windows side by side
-  (`Super+Alt+Left/Right` moves a window to the other monitor).
-+ Edit, `<leader>re` again: zathura reloads and keeps your page.
+*B. One-off export*
++ `<leader>re` writes `out/<name>.pdf` once, `<leader>ro` opens it in zathura.
++ An open zathura window updates after every new export.
 
-Write with A, check with B at the end, then print: `:print` in zathura or
-`lp out/name.pdf`.
+Then print: `:print` in zathura or `lp out/name.pdf`.
 
 == Settings
 

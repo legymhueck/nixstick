@@ -90,23 +90,91 @@ local function run()
   end
 end
 
-local function preview()
-  local file = vim.api.nvim_buf_get_name(0)
-  if vim.bo.filetype == "typst" then
-    vim.cmd("TypstPreviewToggle")
-  elseif vim.bo.filetype == "markdown" and is_marp(0) then
-    vim.system({ "marp", "--preview", "--html", "--allow-local-files", file }, { cwd = vim.fs.dirname(file) })
-  elseif vim.bo.filetype == "markdown" then
-    vim.cmd("RenderMarkdown toggle")
-  end
-end
-
 -- Rendered PDFs always go to out/ next to the source (git-ignored), like
 -- _tools/typst-bauen.py in unterricht and the main repo nixos.
 local function out_pdf(file)
   local out = vim.fs.joinpath(vim.fs.dirname(file), "out")
   vim.fn.mkdir(out, "p")
   return vim.fs.joinpath(out, vim.fn.fnamemodify(file, ":t:r") .. ".pdf")
+end
+
+-- zathura, detached: it outlives Neovim and reloads the PDF when it changes
+-- (export again with <leader>re and the open window updates).
+local function zathura(pdf)
+  if not vim.uv.fs_stat(pdf) then
+    vim.notify("No PDF yet: " .. pdf .. " (export with <leader>re)", vim.log.levels.WARN)
+    return false
+  end
+  vim.system({ "zathura", pdf }, { detach = true })
+  return true
+end
+
+-- Typst preview: `typst watch` writes out/<name>.pdf on every save, zathura
+-- shows it and reloads. Compile errors appear as notifications. Toggle again
+-- (or quit Neovim) to stop the watch; the zathura window stays open.
+local watches = {} -- source file -> vim.SystemObj
+
+local function typst_watch(file)
+  if watches[file] then
+    watches[file]:kill("sigterm")
+    watches[file] = nil
+    vim.notify("Typst watch stopped")
+    return
+  end
+  vim.cmd.update()
+  local root, pdf = git_root(file), out_pdf(file)
+  local opened, pending, errors = false, "", nil
+  -- typst watch reports on stderr: "compiled successfully", or "compiled with
+  -- errors" followed by the diagnostics up to the next "watching" line.
+  local function on_line(line)
+    if line:match("compiled successfully") then
+      errors = nil
+      if not opened then
+        opened = zathura(pdf)
+      end
+    elseif line:match("compiled with errors") then
+      errors = {}
+    elseif errors and line:match("^watching ") then
+      vim.notify(vim.trim(table.concat(errors, "\n")), vim.log.levels.ERROR, { title = "Typst" })
+      errors = nil
+    elseif errors then
+      table.insert(errors, line)
+    end
+  end
+  watches[file] = vim.system({ "typst", "watch", "--root", root, file, pdf }, {
+    cwd = root,
+    text = true,
+    stderr = vim.schedule_wrap(function(_, data)
+      pending = pending .. (data or "")
+      while pending:find("\n") do
+        local line, rest = pending:match("^(.-)\n(.*)$")
+        pending = rest
+        on_line(line)
+      end
+    end),
+  }, function()
+    watches[file] = nil
+  end)
+  vim.notify("Typst watch: " .. vim.fn.fnamemodify(pdf, ":~:.") .. " (updates on save)")
+end
+
+vim.api.nvim_create_autocmd("VimLeavePre", {
+  callback = function()
+    for _, w in pairs(watches) do
+      w:kill("sigterm")
+    end
+  end,
+})
+
+local function preview()
+  local file = vim.api.nvim_buf_get_name(0)
+  if vim.bo.filetype == "typst" then
+    typst_watch(file)
+  elseif vim.bo.filetype == "markdown" and is_marp(0) then
+    vim.system({ "marp", "--preview", "--html", "--allow-local-files", file }, { cwd = vim.fs.dirname(file) })
+  elseif vim.bo.filetype == "markdown" then
+    vim.cmd("RenderMarkdown toggle")
+  end
 end
 
 -- PDF: typst compile --root <repo> | marp --pdf | _tools/pdf-bauen.sh <folder> (all into out/)
@@ -147,17 +215,6 @@ local function export_pptx()
     vim.fs.dirname(file),
     "PPTX written next to the file"
   )
-end
-
--- zathura, detached: it outlives Neovim and reloads the PDF when it changes
--- (export again with <leader>re and the open window updates).
-local function zathura(pdf)
-  if not vim.uv.fs_stat(pdf) then
-    vim.notify("No PDF yet: " .. pdf .. " (export with <leader>re)", vim.log.levels.WARN)
-    return false
-  end
-  vim.system({ "zathura", pdf }, { detach = true })
-  return true
 end
 
 -- The PDF that <leader>re writes for this file: out/<name>.pdf.
