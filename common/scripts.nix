@@ -12,6 +12,7 @@ let
 in
 {
   home.packages = with pkgs; [
+    (mkScript "cycle-windows" [ jq ])
     (mkScript "format-and-mount" [
       btrfs-progs
       cryptsetup

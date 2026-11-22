@@ -8,6 +8,7 @@ commands and aliases).
 
 | Command | Purpose |
 | --- | --- |
+| `cycle-windows` | Focus the next window on any tag (`--prev`: the previous one); Super+Tab |
 | `efi-traces` | List (or `--remove`) traces of earlier boots in a PC's firmware |
 | `format-and-mount` | Format and mount an encrypted LUKS + Btrfs partition |
 | `lock-sync` | Update inputs, pin nixpkgs + Mango to the main repo's lock (cached Mango), switch |

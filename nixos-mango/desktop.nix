@@ -317,7 +317,10 @@ in
         "SUPER,x,set_proportion,0.5"
         "SUPER,n,switch_layout"
         "SUPER+ALT,s,setlayout,scroller"
-        "SUPER,Tab,focusstack,next"
+        # Every window on any tag (scripts/cycle-windows.sh); Alt+Tab shows all at once
+        "SUPER,Tab,spawn,cycle-windows"
+        "SUPER+SHIFT,Tab,spawn,cycle-windows --prev"
+        "SUPER+CTRL,Tab,focusstack,next" # only the windows on the current tag
         "SUPER,Left,focusdir,left"
         "SUPER,Right,focusdir,right"
         "SUPER,Up,focusdir,up"
