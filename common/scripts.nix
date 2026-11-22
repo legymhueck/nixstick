@@ -36,6 +36,14 @@ in
       cryptsetup
       gawk
     ])
+    (mkScript "spell-sync" [
+      coreutils
+      diffutils
+      findutils
+      git
+      gnugrep
+      gnused
+    ])
     (mkScript "ssh-permissions" [ findutils ])
     (mkScript "update-check" [
       curl

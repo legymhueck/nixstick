@@ -14,5 +14,6 @@ commands and aliases).
 | `format-and-mount` | Format and mount an encrypted LUKS + Btrfs partition |
 | `lock-sync` | Update inputs, pin nixpkgs + Mango to the main repo's lock (cached Mango), switch |
 | `luks-header-backup` | Save the stick's LUKS header to a folder |
+| `spell-sync` | Merge Neovim's own spelling words (`dotfiles/nvim/spell/`) with the other repo (nixstick / the main repo nixos), then commit in both |
 | `ssh-permissions` | Reset permissions in `~/.ssh` (700/600/644) |
 | `update-check` | Show which flake inputs have newer upstream commits (read-only) |

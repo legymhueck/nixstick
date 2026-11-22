@@ -72,6 +72,19 @@ picker or explorer); Firefox is still there for filling in forms. In Neovim,
 every new export. In a `.typ` file, `<leader>rp` runs `typst watch` and opens the PDF in zathura: it updates on every save. Exports land in `out/` next to the source (git-ignored).
 Printable cheat sheet: `docs/tips/zathura.typ`.
 
+## Spelling in Neovim
+
+Markdown and Typst files are spell-checked (German and English). `]s` / `[s`
+jump to the next / previous error, `z=` suggests, `zg` adds the word under the
+cursor to your own list, `zw` marks it wrong, `zug` / `zuw` undo. Your own words
+live in the repo (`dotfiles/nvim/spell/de.utf-8.add`), so commit them; the main
+repo nixos has its own copy of the list: `spell-sync` merges both (it finds the
+other repo under `~/GitHub`, or give its path), then commit in both repos.
+
+```sh
+spell-sync                     # merge own spelling words with the main repo nixos
+```
+
 ```sh
 zathura file.pdf               # j/k scroll, J/K or PgDn/PgUp page, gg/G start/end
                                # / search (n/N next/prev), Tab table of contents

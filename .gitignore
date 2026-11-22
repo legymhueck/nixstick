@@ -4,3 +4,6 @@ result-*
 
 # rendered docs, cheat sheets and handouts (out/ next to each source)
 out/
+
+# compiled Neovim word lists (rebuilt from the .add files)
+*.spl

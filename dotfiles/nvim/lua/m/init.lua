@@ -25,6 +25,20 @@ o.updatetime = 300
 o.confirm = true
 o.spelllang = { "de", "en" }
 
+-- Own words (zg/zw) live in the repo, next to this config (dotfiles/nvim/spell),
+-- so they are versioned. The path follows the out-of-store link back to the
+-- checkout. The compiled .spl is git-ignored and rebuilt here when the .add
+-- list is newer (after a git pull, say).
+do
+  local self = vim.uv.fs_realpath(debug.getinfo(1, "S").source:sub(2))
+  local add = vim.fn.fnamemodify(self, ":h:h:h") .. "/spell/de.utf-8.add"
+  o.spellfile = add
+  local a, s = vim.uv.fs_stat(add), vim.uv.fs_stat(add .. ".spl")
+  if a and (not s or s.mtime.sec < a.mtime.sec) then
+    vim.cmd.mkspell({ add, bang = true, mods = { silent = true } })
+  end
+end
+
 -- Prose files: wrap long lines, check spelling.
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown", "typst" },
