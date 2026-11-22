@@ -2,7 +2,7 @@
 
 let
   # Public credentials of the FIDO2 keys (key handle + public key, no secret),
-  # copied from the main repo ~/nixos (common/u2f_keys, written there by
+  # copied from the main repo nixos (common/u2f_keys, written there by
   # `yubikey-registrieren`). Format: one line "<user>:<key 1>:<key 2>".
   keys = lib.trim (builtins.readFile ./u2f_keys);
 in

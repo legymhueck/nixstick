@@ -7,7 +7,7 @@
   # (nixstick-eval). Hostnames are the directory names in hosts/ (nixstick, ...).
   project = "nixstick";
   # Fixed origin of the FIDO2 key (common/yubikey.nix). The same as in the main
-  # repo ~/nixos (pam://nixbox), so one registration (common/u2f_keys) works on
+  # repo nixos (pam://nixbox), so one registration (common/u2f_keys) works on
   # every stick and on the SSD.
   yubikeyOrigin = "pam://nixbox";
   # Btrfs subvolume mount points (@, @home, @nix, @log, created by install.sh).

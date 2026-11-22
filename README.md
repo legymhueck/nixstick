@@ -74,7 +74,7 @@ Old generations are removed weekly (`programs.nh.clean`, keeps 5 and 14 days). C
 ### Notes for a future application or package
 
 - A nixpkgs application (free or unfree) goes into `common/apps.nix` — the one spot for applications. Unfree ones additionally need their pname in the allowlist in `common/base.nix`.
-- No own packages: everything comes from nixpkgs. If one is ever needed, copy it from the main repo (`~/nixos/pkgs`), but only if it does not compile for long.
+- No own packages: everything comes from nixpkgs. If one is ever needed, copy it from the main repo (its `pkgs/`), but only if it does not compile for long.
 - A new user-facing command, alias or script: `docs/tips/commands.md`.
 - Qt apps inherit the Noctalia palette from the qt5ct/qt6ct setup in `nixos-mango/`. Double Commander from nixpkgs is Qt5, so it is themed through qt5ct even though `QT_QPA_PLATFORMTHEME` is set to `qt6ct`.
 
