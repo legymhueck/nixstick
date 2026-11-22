@@ -40,6 +40,7 @@
     lazygit # git UI, also inside Neovim (<leader>gg)
     marp-cli # Marp slides: preview and PDF/HTML/PPTX export
     pandoc # html-bauen.sh, pdf-bauen.sh
+    poppler-utils # pdftotext, pdfinfo, pdfseparate, pdfunite (_tools/abitur-archiv, other PDFs)
     typst # print layout, also docs in the repo nixos
     tinymist # Typst language server
     plantuml # diagramme-bauen.py (brings Graphviz)
