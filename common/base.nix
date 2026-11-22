@@ -231,6 +231,9 @@ in
       # Print layout of the repo unterricht (_vorlagen/typst): Carlito for
       # text, JetBrains Mono NL for code (the package has the NL variants).
       carlito
+      # Source Sans 3: close to Carlito, a little wider; covers ✔ ✘ ″ → too,
+      # so it needs no fallback font (compared 2026-11-22).
+      source-sans
       jetbrains-mono
       nerd-fonts.jetbrains-mono
       noto-fonts
