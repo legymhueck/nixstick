@@ -36,6 +36,7 @@ in
           markdown_inline
           nix
           python
+          regex # highlighting in the Snacks picker
           toml
           typst
           yaml
@@ -66,6 +67,7 @@ in
       markdownlint-cli2
       marksman
       nixd
+      tree-sitter # nvim-treesitter's health check requires the CLI (grammars still come from nixpkgs)
     ];
     extraWrapperArgs = [
       "--set"

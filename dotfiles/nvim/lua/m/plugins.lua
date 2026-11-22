@@ -3,6 +3,7 @@
 vim.cmd.colorscheme("tokyonight-night")
 
 require("mini.icons").setup()
+MiniIcons.mock_nvim_web_devicons() -- plugins asking for nvim-web-devicons get mini.icons
 require("mini.statusline").setup()
 require("mini.surround").setup() -- sa / sd / sr: add, delete, replace quotes and brackets
 require("mini.pairs").setup()
@@ -21,7 +22,8 @@ require("snacks").setup({
 require("oil").setup({ view_options = { show_hidden = true } })
 require("gitsigns").setup()
 
-require("render-markdown").setup({ enabled = false }) -- toggled with <leader>rp
+-- latex off: no latex grammar and no utftex/latex2text converter installed.
+require("render-markdown").setup({ enabled = false, latex = { enabled = false } }) -- toggled with <leader>rp
 -- nixpkgs patches in tinymist and websocat; the default root is the folder
 -- with .git, so /_vorlagen/typst/schule.typ resolves.
 require("typst-preview").setup()
