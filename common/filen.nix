@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, vars, ... }:
 
 let
   dataDir = "%h/.config/filen-cli";
@@ -17,7 +17,7 @@ in
   # filen-cli reads its sync pairs from its data directory.
   xdg.configFile."filen-cli/syncPairs.json".text = builtins.toJSON [
     {
-      local = "/home/m/filen";
+      local = "/home/${vars.user}/filen";
       remote = "/";
       syncMode = "twoWay";
       alias = "drive";

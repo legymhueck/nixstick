@@ -13,6 +13,7 @@ Minimal NixOS desktop (MangoWM + Noctalia) on a USB stick that boots on any x86_
 - No install stages: the installer sets up everything in one run.
 - Foreign PCs (school PCs, in an emergency a teacher's PC) must not change and must not show that the stick booted: `common/traceless.nix` (no EFI variable writes, read-only efivarfs, no `systemd-boot-random-seed`/`systemd-pstore`, `efi_pstore` off, TPM2 units off, chrony without `rtcsync`/RTC trimming, no DHCP hostname, stable Wi-Fi MAC, SATA/NVMe hidden from udisks). `efi-traces` finds and removes traces of older versions.
 - Login: password, fingerprint (own devices only) or YubiKey (`common/yubikey.nix`, `pam_u2f`, origin `pam://nixbox` and `common/u2f_keys` shared with the main repo). gnome-keyring is unlocked by the LUKS passphrase (`pam_fde_boot_pw`, `nixos-mango/configuration.nix`).
+- Filen: `common/filen.nix` syncs `~/filen` two-way with the whole Filen drive (filen-cli, user unit `filen-sync`). The on/off switch is the flag file `~/.config/filen-cli/sync-enabled` (`filen-sync on|off`), not `systemctl --user enable`: Home Manager links the unit into `default.target` itself. Printable guide `docs/tips/filen.typ` (Typst on purpose, for printing).
 - Updates: `update` = `lock-sync` (all inputs, then nixpkgs + Mango pinned to the main repo's `flake.lock`, so Mango comes from the Cachix cache `nixbox-m`).
 
 ## Invariants

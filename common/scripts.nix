@@ -13,6 +13,10 @@ in
 {
   home.packages = with pkgs; [
     (mkScript "cycle-windows" [ jq ])
+    (mkScript "filen-sync" [
+      coreutils
+      systemd
+    ])
     (mkScript "format-and-mount" [
       btrfs-progs
       cryptsetup

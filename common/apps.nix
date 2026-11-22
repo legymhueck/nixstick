@@ -29,6 +29,7 @@
 
     # --- desktop applications ---
     pwvucontrol # audio devices and levels (headsets on foreign PCs)
+    filen-cli # Filen cloud: `filen` (login, files); sync service in ./filen.nix
 
     # --- coding agents (claude-code and github-copilot-cli are unfree) ---
     claude-code

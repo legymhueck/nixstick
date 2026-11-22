@@ -86,6 +86,19 @@ gh auth login                  # GitHub login, also for git push over HTTPS
 direnv allow                   # load a repo's .envrc (`use flake`) on cd
 ```
 
+## Filen cloud
+
+`~/filen` syncs two-way with the whole Filen drive while the switch is on
+(`common/filen.nix`; printable guide: `docs/tips/filen.typ`).
+
+```sh
+filen                          # once: log in and save the credentials (also: browse the drive)
+filen-sync on                  # start syncing, stays on after reboots
+filen-sync off                 # stop syncing (the files in ~/filen stay)
+filen-sync status              # on or off, service state
+filen-sync log                 # follow the sync log
+```
+
 ## Btrfs
 
 ```sh

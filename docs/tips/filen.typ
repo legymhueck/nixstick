@@ -59,7 +59,7 @@ filen-sync log       # follow the sync log live (Ctrl+C quits)
 == Good to know
 
 - *The first sync downloads the whole drive.* Check that it fits on the stick
-  before switching on: `df -h ~` on the stick, used space on filen.io.
+  before switching on: `df -h ~` (free on the stick) against `filen statfs` (used on the drive).
 - *Deleting is synced.* A file deleted in `~/filen` is deleted in the cloud too
   (and the other way round). Deleted files land in Filen's trash online and
   locally in `~/filen/.filen.trash.local`.
@@ -77,7 +77,7 @@ filen-sync log       # follow the sync log live (Ctrl+C quits)
   inset: 6pt,
   [*Symptom*], [*What to do*],
   [`filen-sync on` says "Not logged in"], [Run `filen`, log in, save the credentials.],
-  [Status says "condition failed" / "inactive"], [The switch is off or the login is missing: `filen-sync on`.],
+  [Status says "inactive" / "start condition unmet"], [The switch is off or the login is missing: `filen-sync on`.],
   [Errors in `filen-sync log` after a password change], [`filen logout`, then `filen` to log in again, then `filen-sync on`.],
   [Sync stuck or confused], [`filen-sync off`, then `filen-sync on`.],
 )

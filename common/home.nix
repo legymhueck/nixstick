@@ -9,6 +9,7 @@
     inputs.nix-index-database.homeModules.nix-index
     ./firefox.nix
     ./apps.nix
+    ./filen.nix
     ./neovim.nix
     ./scripts.nix
   ];
