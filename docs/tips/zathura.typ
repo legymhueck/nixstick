@@ -1,5 +1,6 @@
 // zathura cheat sheet -- printable, one A4 page.
-// Build: typst compile docs/tips/zathura.typ  (writes zathura.pdf next to it)
+// Build: typst compile docs/tips/zathura.typ docs/tips/out/zathura.pdf  (out/ is git-ignored;
+// mkdir -p docs/tips/out first, or <leader>re in Neovim)
 
 #set document(title: "zathura cheat sheet")
 #set page(paper: "a4", margin: (x: 1.6cm, y: 1.5cm), columns: 2)
@@ -94,7 +95,7 @@
 == From Neovim
 
 #keys(
-  [`<leader>re`], [export PDF (Typst, Marp, Markdown)],
+  [`<leader>re`], [export PDF (Typst, Marp, Markdown) to `out/` next to the file],
   [`<leader>ro`], [open that PDF in zathura; export again and the window updates],
   [`<leader>sp`], [pick from all PDFs in the folder (git-ignored exports too)],
   [open a `.pdf`], [picker, explorer or `nvim file.pdf`: opens in zathura],

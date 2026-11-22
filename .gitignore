@@ -1,3 +1,6 @@
 # nix build output links
 result
 result-*
+
+# rendered docs, cheat sheets and handouts (out/ next to each source)
+out/

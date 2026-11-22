@@ -41,6 +41,8 @@ Flakes only see git-tracked files: `git add` new files before evaluating. Users 
 
 ## Making changes
 
+- Printable docs (Typst cheat sheets, handouts) render into `out/` next to the source (`docs/tips/zathura.typ` -> `docs/tips/out/zathura.pdf`), the same rule as the main repo nixos and the repo unterricht; `out/` is git-ignored everywhere and never committed. Neovim `<leader>re` writes there, `<leader>ro` opens it.
+
 - Shared things go in `common/`; the variant dir only holds desktop-specific things.
 - New or renamed nix file: update the `imports`. `install.sh` needs no file list: before wiping it evaluates `nixstick-eval`, which fails on any missing file.
 - Shell scripts (`install.sh`, `scripts/`): `shfmt -i 2 -ci`, checked by the flake check `lint`.

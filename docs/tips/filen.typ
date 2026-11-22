@@ -1,5 +1,6 @@
 // Filen cloud sync on the stick -- printable handout.
-// Build: typst compile docs/tips/filen.typ  (writes filen.pdf next to it)
+// Build: typst compile docs/tips/filen.typ docs/tips/out/filen.pdf  (out/ is git-ignored;
+// mkdir -p docs/tips/out first, or <leader>re in Neovim)
 
 #set document(title: "Filen sync on the stick")
 #set page(paper: "a4", margin: (x: 2cm, y: 2cm), numbering: "1 / 1")

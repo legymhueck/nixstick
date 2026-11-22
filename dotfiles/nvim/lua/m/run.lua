@@ -101,18 +101,26 @@ local function preview()
   end
 end
 
--- PDF: typst compile --root <repo> | marp --pdf | _tools/pdf-bauen.sh <folder>
+-- Rendered PDFs always go to out/ next to the source (git-ignored), like
+-- _tools/typst-bauen.py in unterricht and the main repo nixos.
+local function out_pdf(file)
+  local out = vim.fs.joinpath(vim.fs.dirname(file), "out")
+  vim.fn.mkdir(out, "p")
+  return vim.fs.joinpath(out, vim.fn.fnamemodify(file, ":t:r") .. ".pdf")
+end
+
+-- PDF: typst compile --root <repo> | marp --pdf | _tools/pdf-bauen.sh <folder> (all into out/)
 local function export_pdf()
   vim.cmd.update()
   local file = vim.api.nvim_buf_get_name(0)
   local root = git_root(file)
   if vim.bo.filetype == "typst" then
-    job({ "typst", "compile", "--root", root, file }, root, "PDF written next to the file")
+    job({ "typst", "compile", "--root", root, file, out_pdf(file) }, root, "PDF written to out/")
   elseif is_marp(0) then
     job(
-      { "marp", "--pdf", "--html", "--allow-local-files", file },
+      { "marp", "--pdf", "--html", "--allow-local-files", file, "-o", out_pdf(file) },
       vim.fs.dirname(file),
-      "PDF written next to the file"
+      "PDF written to out/"
     )
   elseif vim.bo.filetype == "markdown" then
     term({ "bash", root .. "/_tools/pdf-bauen.sh", vim.fs.dirname(file) }, root)
@@ -152,9 +160,10 @@ local function zathura(pdf)
   return true
 end
 
--- The PDF that <leader>re writes for this file (same name, .pdf).
+-- The PDF that <leader>re writes for this file: out/<name>.pdf.
 local function open_pdf()
-  zathura(vim.fn.expand("%:p:r") .. ".pdf")
+  local file = vim.api.nvim_buf_get_name(0)
+  zathura(vim.fs.joinpath(vim.fs.dirname(file), "out", vim.fn.fnamemodify(file, ":t:r") .. ".pdf"))
 end
 
 -- Opening a PDF (nvim file.pdf, picker, explorer) shows it in zathura instead
