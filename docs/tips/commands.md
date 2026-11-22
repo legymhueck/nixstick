@@ -45,6 +45,17 @@ Super+L locks the screen at once. With several monitors, Super+Alt+Left/Right
 moves the focused window to the neighbouring monitor, Alt+Shift+Left/Right moves
 the focus there.
 
+## Printing
+
+The Kyocera FS-3820N on the home LAN is the default printer (`common/printing.nix`).
+
+```sh
+lp file.pdf                    # print (A4)
+lp -o sides=two-sided-long-edge file.pdf   # both sides
+lpstat -p -d                   # printers and the default one
+system-config-printer          # printer settings (GUI)
+```
+
 ## Coding agents and editor
 
 ```sh

@@ -25,6 +25,7 @@ in
   # (no traces in firmware, TPM, clock, disks) in traceless.nix, the YubiKey in
   # yubikey.nix, the desktop in nixos-mango/.
   imports = [
+    ./printing.nix
     ./traceless.nix
     ./yubikey.nix
   ];
