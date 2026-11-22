@@ -43,6 +43,8 @@
       "application/x-extension-xhtml" = [ "firefox.desktop" ];
       "application/x-extension-xht" = [ "firefox.desktop" ];
       "inode/directory" = [ "doublecmd.desktop" ];
+      "application/pdf" = [ "org.pwmt.zathura-pdf-mupdf.desktop" ];
+      "application/epub+zip" = [ "org.pwmt.zathura-pdf-mupdf.desktop" ];
     };
   };
 }

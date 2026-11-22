@@ -141,7 +141,38 @@ local function export_pptx()
   )
 end
 
+-- zathura, detached: it outlives Neovim and reloads the PDF when it changes
+-- (export again with <leader>re and the open window updates).
+local function zathura(pdf)
+  if not vim.uv.fs_stat(pdf) then
+    vim.notify("No PDF yet: " .. pdf .. " (export with <leader>re)", vim.log.levels.WARN)
+    return false
+  end
+  vim.system({ "zathura", pdf }, { detach = true })
+  return true
+end
+
+-- The PDF that <leader>re writes for this file (same name, .pdf).
+local function open_pdf()
+  zathura(vim.fn.expand("%:p:r") .. ".pdf")
+end
+
+-- Opening a PDF (nvim file.pdf, picker, explorer) shows it in zathura instead
+-- of loading the binary into a buffer.
+vim.api.nvim_create_autocmd("BufReadCmd", {
+  pattern = "*.pdf",
+  callback = function(ev)
+    local pdf = vim.api.nvim_buf_get_name(ev.buf)
+    local msg = zathura(pdf) and "Opened in zathura: " or "No such PDF: "
+    vim.api.nvim_buf_set_lines(ev.buf, 0, -1, false, { msg .. pdf })
+    vim.bo[ev.buf].buftype = "nofile"
+    vim.bo[ev.buf].bufhidden = "wipe"
+    vim.bo[ev.buf].modifiable = false
+  end,
+})
+
 local map = vim.keymap.set
+map("n", "<leader>ro", open_pdf, { desc = "Open exported PDF (zathura)" })
 map("n", "<leader>rr", run, { desc = "Run file (Python / Java)" })
 map("n", "<leader>rp", preview, { desc = "Preview (Typst / Marp / Markdown)" })
 map("n", "<leader>re", export_pdf, { desc = "Export PDF" })

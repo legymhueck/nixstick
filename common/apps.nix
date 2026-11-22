@@ -81,6 +81,24 @@
     ];
   };
 
+  # PDF viewer: zathura with the MuPDF backend (nixpkgs default; also EPUB,
+  # DjVu, PostScript, comics). Fast and light on RAM; Vim keys. The default
+  # for PDFs in nixos-mango/home.nix; Firefox stays for filling in forms.
+  programs.zathura = {
+    enable = true;
+    options = {
+      selection-clipboard = "clipboard"; # selecting text copies it (Ctrl+V)
+      adjust-open = "width";
+      window-title-basename = true;
+      recolor-keephue = true; # Ctrl+r: dark mode, colors keep their hue
+      render-loading = false;
+    };
+    # Colors from the wallpaper: Noctalia's zathura template writes noctaliarc
+    # (nixos-mango/desktop.nix). Missing file (before the first theme run):
+    # zathura warns and keeps its default colors.
+    extraConfig = "include noctaliarc";
+  };
+
   # VSCodium (free build of VS Code) with the extensions for both repos; only
   # the Claude extension is unfree.
   # programs.vscodium (not programs.vscode with package = vscodium): only it

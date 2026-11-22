@@ -64,6 +64,20 @@ the focus there. Super+Tab / Super+Shift+Tab go through all windows on every
 tag (`cycle-windows`), Super+Ctrl+Tab only those on the current tag; Alt+Tab
 shows them all in the overview.
 
+## PDFs
+
+PDFs and EPUBs open in zathura (`xdg-open`, Double Commander, and Neovim's
+picker or explorer); Firefox is still there for filling in forms. In Neovim,
+`<leader>ro` opens the PDF that `<leader>re` exported; zathura reloads it on
+every new export. Printable cheat sheet: `docs/tips/zathura.typ`.
+
+```sh
+zathura file.pdf               # j/k scroll, J/K or PgDn/PgUp page, gg/G start/end
+                               # / search (n/N next/prev), Tab table of contents
+                               # +/- zoom, a fit page, s fit width, Ctrl+r dark mode
+                               # f follow a link, d two pages, r rotate, q quit
+```
+
 ## Printing
 
 The Kyocera FS-3820N on the home LAN is the default printer (`common/printing.nix`).
@@ -81,6 +95,9 @@ system-config-printer          # printer settings (GUI)
 claude                         # Claude Code (first start: log in)
 copilot                        # GitHub Copilot CLI (needs `gh auth login` / Copilot plan)
 opencode                       # opencode
+n                              # Neovim (nvim)
+nn                             # Neovim in ~/nixos (the shell stays there)
+nu                             # Neovim in ~/GitHub/unterricht (the shell stays there)
 codium .                       # VSCodium in the current folder
 gh auth login                  # GitHub login, also for git push over HTTPS
 direnv allow                   # load a repo's .envrc (`use flake`) on cd

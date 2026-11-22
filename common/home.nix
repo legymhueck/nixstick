@@ -46,6 +46,10 @@
       rebuild = "nh os switch";
       update = "lock-sync"; # update inputs, pin nixpkgs + Mango to the main repo's cache, switch
       l = "eza -al --icons";
+      # Neovim, in a repo: the shell stays there afterwards (git, lazygit).
+      n = "nvim";
+      nn = "cd ~/nixos && nvim";
+      nu = "cd ~/GitHub/unterricht && nvim";
       battery = "acpi --battery --details";
       bigFiles = "du -ahx . | sort -h | nl";
       cpufreq = "watch grep \"cpu MHz\" /proc/cpuinfo";

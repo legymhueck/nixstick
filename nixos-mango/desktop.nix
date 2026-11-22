@@ -212,6 +212,11 @@ in
           "mango"
           "qt"
         ];
+        # Community template (downloaded by Noctalia, cached in
+        # ~/.local/state/noctalia): writes ~/.config/zathura/noctaliarc, which
+        # common/apps.nix includes, and reloads open zathura windows.
+        enable_community_templates = true;
+        community_ids = [ "zathura" ];
       };
       widget.Spacer = {
         length = 10;
