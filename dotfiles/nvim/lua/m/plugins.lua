@@ -80,6 +80,11 @@ map("n", "-", "<cmd>Oil<cr>", { desc = "Folder as buffer (oil)" })
 map("n", "<leader>sr", function()
   pick.recent()
 end, { desc = "Recent files" })
+-- PDFs only, git-ignored ones too (exports are ignored in the repo unterricht);
+-- opening one starts zathura (m/run.lua).
+map("n", "<leader>sp", function()
+  pick.files({ ft = "pdf", ignored = true, title = "PDFs" })
+end, { desc = "PDFs (zathura)" })
 map("n", "<leader>sh", function()
   pick.help()
 end, { desc = "Help pages" })

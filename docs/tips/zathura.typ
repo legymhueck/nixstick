@@ -96,6 +96,7 @@
 #keys(
   [`<leader>re`], [export PDF (Typst, Marp, Markdown)],
   [`<leader>ro`], [open that PDF in zathura; export again and the window updates],
+  [`<leader>sp`], [pick from all PDFs in the folder (git-ignored exports too)],
   [open a `.pdf`], [picker, explorer or `nvim file.pdf`: opens in zathura],
   [`gx`], [on a path or URL: open it with the default program],
 )
