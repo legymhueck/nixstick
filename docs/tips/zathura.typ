@@ -102,6 +102,23 @@
   [`gx`], [on a path or URL: open it with the default program],
 )
 
+== Workflow: write a `.typ`, watch the result
+
+*A. Live preview while writing*
++ Open the `.typ` file, press `<leader>rp`.
++ The browser shows the document and updates as you type (no saving needed);
+  clicking in it jumps to that spot in the source.
++ `<leader>rp` again turns it off.
+
+*B. The real PDF in zathura* (print layout, the file itself)
++ `<leader>re` writes `out/<name>.pdf`.
++ `<leader>ro` opens it in zathura; put the windows side by side
+  (`Super+Alt+Left/Right` moves a window to the other monitor).
++ Edit, `<leader>re` again: zathura reloads and keeps your page.
+
+Write with A, check with B at the end, then print: `:print` in zathura or
+`lp out/name.pdf`.
+
 == Settings
 
 `common/apps.nix` (`programs.zathura.options`), applied with `nh os switch`.
