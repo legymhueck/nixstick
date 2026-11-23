@@ -148,6 +148,33 @@ filen-sync status              # on or off, service state
 filen-sync log                 # follow the sync log
 ```
 
+## Mail
+
+aerc reads over IMAP directly (no local copy), msmtp sends, the password comes
+from pass (`common/mail.nix`; isync's `mbsync` is installed but not set up).
+Full tutorial (setup, keys, troubleshooting): `docs/tips/aerc.typ`.
+
+Once per stick:
+
+```sh
+gpg --full-generate-key        # ed25519 key; its passphrase is asked once per 8 h (pinentry window)
+pass init <key-id or e-mail>   # create the store in ~/.local/share/password-store
+pass insert mail/<address>     # the mail password, one entry per address
+```
+
+Then add a `mkAccount` block per address in `common/mail.nix` and `rebuild`.
+
+```sh
+aerc                           # mail; ? lists the keys, :compose writes, :q quits
+msmtp-queue -d                 # show mail queued while offline (msmtpq)
+msmtp-queue -r                 # send the queue (once online again)
+pass                           # list stored passwords
+```
+
+The GPG key lives only on this stick: back up `~/.gnupg` (e.g. with
+`gpg --export-secret-keys -a`) to an encrypted place, or the store is lost
+with the stick.
+
 ## Btrfs
 
 ```sh

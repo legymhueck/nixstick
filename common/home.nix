@@ -10,6 +10,7 @@
     ./firefox.nix
     ./apps.nix
     ./filen.nix
+    ./mail.nix
     ./neovim.nix
     ./scripts.nix
   ];
