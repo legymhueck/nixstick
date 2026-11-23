@@ -117,6 +117,24 @@ gh auth login                  # GitHub login, also for git push over HTTPS
 direnv allow                   # load a repo's .envrc (`use flake`) on cd
 ```
 
+## VeraCrypt
+
+Encrypted containers and volumes, compatible with VeraCrypt on Windows
+(`common/apps.nix`). Mounting needs no sudo password (sudo rule for VeraCrypt's
+core service in `common/base.nix`, as in the main repo nixos).
+
+```sh
+veracrypt                      # GUI: Select File, Mount
+veracrypt -t container.hc ~/vc # text mode: mount the container at ~/vc
+veracrypt -t -d                # dismount all
+schul-ssd                      # school SSD (slot 1) + abgaben.hc (slot 2), password asked once
+schul-ssd --nur-ssd            # only the school SSD
+schul-ssd status               # what is open, and where
+schul-ssd aus                  # close both, power the SSD off -- then unplug
+```
+
+Do not mount volumes on a foreign PC's internal disks: that writes to them.
+
 ## Filen cloud
 
 `~/filen` syncs two-way with the whole Filen drive while the switch is on

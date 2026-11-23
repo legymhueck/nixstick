@@ -16,6 +16,7 @@ let
     "claude-code"
     "copilot-language-server"
     "github-copilot-cli"
+    "veracrypt"
     "vscode-extension-anthropic-claude-code"
   ];
 in
@@ -164,6 +165,28 @@ in
     };
     # Root login is disabled; use sudo from user "m" (wheel).
     users.users.root.hashedPassword = "!";
+    # VeraCrypt mounts via `sudo -S <its binary> --core-service` (the path from
+    # /proc/self/exe: nixpkgs' wrapProgram makes that bin/.veracrypt-wrapped,
+    # not bin/veracrypt) after probing `sudo -n true`;
+    # it asks for the password only if that probe fails. Both run without a
+    # password here. Trade-off: anything running as the user can drive the
+    # root core service (mount any volume anywhere) without a password.
+    # (Same rule as in the main repo nixos.)
+    security.sudo.extraRules = [
+      {
+        users = [ vars.user ];
+        commands = [
+          {
+            command = "${pkgs.veracrypt}/bin/.veracrypt-wrapped --core-service";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "/run/current-system/sw/bin/true";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
 
     # --- services ---
     services.tailscale = {
