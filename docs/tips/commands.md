@@ -159,7 +159,7 @@ Once per stick:
 ```sh
 gpg --full-generate-key        # ed25519 key; its passphrase is asked once per 8 h (pinentry window)
 pass init <key-id or e-mail>   # create the store in ~/.local/share/password-store
-pass insert mail/<address>     # the mail password, one entry per address
+pass insert mail/<address>     # the ACCOUNT password (not the GPG passphrase), one entry per address
 ```
 
 Then add a `mkAccount` block per address in `common/mail.nix` and `rebuild`.

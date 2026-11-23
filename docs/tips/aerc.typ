@@ -93,9 +93,31 @@ gpg --list-secret-keys --keyid-format long
 
 ```sh
 pass init 074F6A977E7F6334     # the key ID from step 2 (once for the whole store)
-pass insert mail/michael.lehnen@gymhueck.de   # type the mail password twice
+pass insert mail/michael.lehnen@gymhueck.de   # type the ACCOUNT's password twice
 pass show mail/michael.lehnen@gymhueck.de     # test: asks for the GPG passphrase
 ```
+
+*Two different passwords* are involved, and they are easy to mix up:
+
+#table(
+  columns: (auto, auto, 1fr),
+  stroke: 0.5pt + luma(170),
+  inset: 6pt,
+  [*Password*], [*Where you type it*], [*What it does*],
+  [*Mail account password*],
+  [once, at `pass insert mail/<address>`],
+  [Logs in to the mail server, the same one any mail program would use. pass keeps it encrypted; aerc and msmtp fetch it themselves.],
+
+  [*GPG key passphrase*],
+  [in the pop-up window, about every 8 h],
+  [Unlocks your GPG key (step 2) so pass can decrypt the mail password.],
+)
+
+So `pass insert` always wants the *account's* password, and the pop-up window
+always wants the *GPG passphrase*. Some servers want an app password instead of
+the normal login password: the school account (LOGINEO NRW, `mail.nrw.schule`)
+uses a long generated password, the one aerc's own account wizard
+(`:new-account`) also asks for. Store exactly that one.
 
 `mail/michael.lehnen@gymhueck.de` is *one* entry, the whole string is its
 name. `mail/` is a folder that groups the mail passwords; everything after the
@@ -256,7 +278,7 @@ msmtp-queue -r       # send everything in the queue now
   [*Symptom*], [*What to do*],
   [aerc hangs at "Connecting", no messages arrive], [The account URL uses `imap://` (or `smtp://`) on port 993 (465): those ports speak TLS from the start and need `imaps://` / `smtps://`. Happens with aerc's own account wizard (`:new-account`), not with `common/mail.nix`.],
   [`aerc` shows no account / the old example], [`rebuild` not run after changing `common/mail.nix`.],
-  [Login failed / authentication error], [Test `pass show mail/<address>`. With two-factor login an *app password* is needed; check the login name.],
+  [Login failed / authentication error], [Is the *account's* password in pass, not the GPG passphrase or another password? Check with `pass show mail/<address>`; replace with `pass insert -f mail/<address>`. With two-factor login an *app password* is needed; check the login name.],
   [No passphrase window, aerc hangs on connect], [Run `pass show mail/<address>` in a terminal once: the window appears, the passphrase is then cached for 8 h.],
   [Sending fails], [`msmtp --serverinfo -a <account>`. Port 587 needs `tls.useStartTls = true`, 465 must not have it.],
   [Sent mail does not appear in Sent], [The provider names it differently (e.g. `Sent Items`): set `folders.sent = "Sent Items";` in the account block, `rebuild`. The same for `folders.drafts`, `folders.trash`.],
