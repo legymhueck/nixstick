@@ -8,11 +8,11 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 
 ## Open tasks on the stick
 
-- (2026-11-24) Filen changed in the main repo session: sync pair with `excludeDotFiles` and `disableLocalTrash`, restart trigger on the unit, cloud folder `05-P` renamed to `privat`, new top folder `schule` (student data, for a limited time; rule in the main repo `docs/setup/cloud-sync.typ`).
-  1. *auto:* `git -C ~/nixos pull --ff-only`, then ask the user to run `rebuild` (needs sudo). The changed sync pair restarts `filen-sync` by itself.
-  2. *auto:* `filen-sync status`; `ls ~/filen` should show `privat` and `schule`. A local `05-P` next to `privat` means the stick missed the rename: stop the sync (`filen-sync off`) and ask, never delete it (compare with `filen ls /privat` first).
-  3. (added later the same day) OneDrive is retired in the main repo: its `Dokumente` moved into Filen (`schule/englisch`, `informatik`, `religion`, `04-S`, `_unsortiert`), so the drive grows to about 4.5 GB, all of it synced onto the stick. *auto:* before the sync catches up, compare `df -h ~` with `filen statfs`; if the stick gets tight, `filen-sync off` and ask (a sync pair limited to `privat` would be the fix).
-  4. Ask: `~/filen/.filen.trash.local` is no longer used. Show its size and contents (`du -sh`, `find … | head`), delete only after the user agrees.
+- (2026-11-24) Filen was reorganised from the main system: OneDrive's `Dokumente` moved in (`schule/englisch`, `informatik`, `religion`, `verwaltung`, `schuelerdaten`, `_unsortiert`), everything renamed to lowercase/hyphens (rule: main repo `docs/tips/dateinamen.typ`), duplicates deleted, and the cloud was rebuilt as an exact copy of the main system's `~/filen`. The stick's local `~/filen` and its sync state no longer match the cloud: syncing them as they are would upload old names again (case-only renames confuse filen-cli). Never run `filen-sync on` before step 2. The sync pair also changed (`excludeDotFiles`, `disableLocalTrash`, restart trigger).
+  1. *auto:* `git -C ~/nixos pull --ff-only`, then ask the user to run `rebuild` (needs sudo).
+  2. *auto, after asking once:* `filen-sync off`; if `~/filen` holds anything not in the cloud (compare `find ~/filen -type f | wc -l` and spot-check with `filen ls`), stop and ask. Otherwise `rm -rf ~/filen ~/.config/filen-cli/sync/state` (the cloud has everything; keep `~/.config/filen-cli` itself, it holds the login).
+  3. *auto:* `df -h ~` against `filen statfs` (about 4 GB); if it does not fit, ask (a sync pair limited to `privat` would be the fix).
+  4. *auto:* `filen-sync on`, then `filen-sync status`; the first run downloads everything.
 
 ## How it fits together
 
