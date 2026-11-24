@@ -11,7 +11,8 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 - (2026-11-24) Filen changed in the main repo session: sync pair with `excludeDotFiles` and `disableLocalTrash`, restart trigger on the unit, cloud folder `05-P` renamed to `privat`, new top folder `schule` (student data, for a limited time; rule in the main repo `docs/setup/cloud-sync.typ`).
   1. *auto:* `git -C ~/nixos pull --ff-only`, then ask the user to run `rebuild` (needs sudo). The changed sync pair restarts `filen-sync` by itself.
   2. *auto:* `filen-sync status`; `ls ~/filen` should show `privat` and `schule`. A local `05-P` next to `privat` means the stick missed the rename: stop the sync (`filen-sync off`) and ask, never delete it (compare with `filen ls /privat` first).
-  3. Ask: `~/filen/.filen.trash.local` is no longer used. Show its size and contents (`du -sh`, `find … | head`), delete only after the user agrees.
+  3. (added later the same day) OneDrive is retired in the main repo: its `Dokumente` moved into Filen (`schule/englisch`, `informatik`, `religion`, `04-S`, `_unsortiert`), so the drive grows to about 4.5 GB, all of it synced onto the stick. *auto:* before the sync catches up, compare `df -h ~` with `filen statfs`; if the stick gets tight, `filen-sync off` and ask (a sync pair limited to `privat` would be the fix).
+  4. Ask: `~/filen/.filen.trash.local` is no longer used. Show its size and contents (`du -sh`, `find … | head`), delete only after the user agrees.
 
 ## How it fits together
 
