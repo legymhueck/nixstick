@@ -2,6 +2,18 @@
 
 let
   dataDir = "%h/.config/filen-cli";
+  syncPairs = pkgs.writeText "filen-syncPairs.json" (
+    builtins.toJSON [
+      {
+        local = "/home/${vars.user}/filen";
+        remote = "/";
+        syncMode = "twoWay";
+        alias = "drive";
+        excludeDotFiles = true;
+        disableLocalTrash = true;
+      }
+    ]
+  );
 in
 {
   # Filen cloud sync: ~/filen <-> the whole Filen drive, two-way, with the
@@ -17,16 +29,7 @@ in
   # filen-cli reads its sync pairs from its data directory. Dot files stay
   # local; the local trash is off, as in the main repo nixos (with Filen on two
   # systems it broke the sync).
-  xdg.configFile."filen-cli/syncPairs.json".text = builtins.toJSON [
-    {
-      local = "/home/${vars.user}/filen";
-      remote = "/";
-      syncMode = "twoWay";
-      alias = "drive";
-      excludeDotFiles = true;
-      disableLocalTrash = true;
-    }
-  ];
+  xdg.configFile."filen-cli/syncPairs.json".source = syncPairs;
 
   systemd.user.services.filen-sync = {
     Unit = {
@@ -35,6 +38,9 @@ in
         "${dataDir}/sync-enabled"
         "${dataDir}/.filen-cli-keep-me-logged-in"
       ];
+      # A changed sync pair restarts a running sync at the next rebuild
+      # (Home Manager restarts units whose file changed).
+      X-Restart-Triggers = [ "${syncPairs}" ];
       # Keep retrying while offline; never give up.
       StartLimitIntervalSec = 0;
     };
