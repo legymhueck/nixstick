@@ -62,8 +62,9 @@ filen-sync log       # follow the sync log live (Ctrl+C quits)
 - *The first sync downloads the whole drive.* Check that it fits on the stick
   before switching on: `df -h ~` (free on the stick) against `filen statfs` (used on the drive).
 - *Deleting is synced.* A file deleted in `~/filen` is deleted in the cloud too
-  (and the other way round). Deleted files land in Filen's trash online and
-  locally in `~/filen/.filen.trash.local`.
+  (and the other way round). Deleted files land in Filen's trash online; there
+  is no local trash (it broke the sync when Filen ran on two systems).
+- *Hidden files and folders* (names starting with a dot) are not synced.
 - *Offline is fine.* Without a network the service retries every 30 seconds
   and catches up once you are online.
 - *The desktop stays responsive.* The sync runs at idle I/O priority, because

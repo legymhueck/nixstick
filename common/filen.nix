@@ -14,13 +14,17 @@ in
   # next login. The unit is always wanted and skips itself while the flag (or
   # the saved login from `filen`) is missing.
 
-  # filen-cli reads its sync pairs from its data directory.
+  # filen-cli reads its sync pairs from its data directory. Dot files stay
+  # local; the local trash is off, as in the main repo nixos (with Filen on two
+  # systems it broke the sync).
   xdg.configFile."filen-cli/syncPairs.json".text = builtins.toJSON [
     {
       local = "/home/${vars.user}/filen";
       remote = "/";
       syncMode = "twoWay";
       alias = "drive";
+      excludeDotFiles = true;
+      disableLocalTrash = true;
     }
   ];
 
