@@ -6,7 +6,9 @@
 #set document(title: "Neovim keymaps")
 #set page(paper: "a4", margin: (x: 1.6cm, y: 1.5cm), columns: 2)
 #set columns(gutter: 1cm)
-#set text(size: 9.5pt, lang: "en")
+// Carlito/JetBrains Mono (TrueType): the Kyocera FS-3820N fails on Typst's default Libertinus (CFF fonts).
+#set text(font: "Carlito", size: 9.5pt, lang: "en")
+#show raw: set text(font: ("JetBrains Mono NL", "DejaVu Sans Mono"))
 #set heading(numbering: none)
 #show heading.where(level: 1): it => place(top, scope: "parent", float: true, block(below: 0.8em, text(
   size: 17pt,

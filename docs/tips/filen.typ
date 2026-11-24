@@ -4,7 +4,9 @@
 
 #set document(title: "Filen sync on the stick")
 #set page(paper: "a4", margin: (x: 2cm, y: 2cm), numbering: "1 / 1")
-#set text(size: 10.5pt, lang: "en")
+// Carlito/JetBrains Mono (TrueType): the Kyocera FS-3820N fails on Typst's default Libertinus (CFF fonts).
+#set text(font: "Carlito", size: 10.5pt, lang: "en")
+#show raw: set text(font: ("JetBrains Mono NL", "DejaVu Sans Mono"))
 #set par(justify: true)
 #set heading(numbering: none)
 #show heading.where(level: 1): set text(size: 18pt)
