@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 
 {
   # The single spot for applications, free and unfree: everything from the
@@ -28,6 +32,10 @@
     doublecmd
 
     # --- desktop applications ---
+    # aspell: spelling suggestions in Recoll (services.recoll below)
+    aspell
+    aspellDicts.de
+    aspellDicts.en
     pwvucontrol # audio devices and levels (headsets on foreign PCs)
     filen-cli # Filen cloud: `filen` (login, files); sync service in ./filen.nix
     # Encrypted containers/volumes (also TrueCrypt ones, shared with Windows).
@@ -70,6 +78,68 @@
     shfmt
     statix
   ];
+
+  # Full-text search (Office, ODF, PDF, Markdown ...) over the folders in
+  # topdirs, ported from the main repo nixos. The index (~/.recoll) is updated
+  # daily by a systemd user timer, incrementally, so few writes to the flash;
+  # search with the `recoll` GUI or `recollq WORD`. Unlike the main repo no
+  # LibreOffice fallback for old .doc files antiword cannot read (LibreOffice
+  # is not on the stick).
+  services.recoll = {
+    enable = true;
+    startAt = "daily";
+    # recollq stems with English unless told otherwise; the wrapper makes
+    # German the default (a later -s on the command line still wins).
+    package = pkgs.symlinkJoin {
+      inherit (pkgs.recoll) pname version meta;
+      paths = [ pkgs.recoll ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = "wrapProgram $out/bin/recollq --add-flags '-s german'";
+    };
+    settings = {
+      # School material (repo and Filen), the knowledge base of the main repo
+      # nixos (if cloned) and the private Filen folder.
+      topdirs = map (d: "${config.home.homeDirectory}/${d}") [
+        "GitHub/unterricht"
+        "GitHub/nixos_full/nixos/wissen"
+        "filen/schule"
+        "filen/privat"
+      ];
+      # Student data never goes into the index; _unsortiert may hold some
+      # until it is sorted.
+      skippedPaths = map (d: "${config.home.homeDirectory}/filen/schule/${d}") [
+        "schuelerdaten"
+        "_unsortiert"
+      ];
+      "skippedNames+" = [
+        ".git"
+        ".spiegel-papierkorb"
+        ".venv"
+        "__pycache__"
+        "node_modules"
+        "out"
+        "*.class"
+      ];
+      # Media files: only the file name is indexed, not the content.
+      indexallfilenames = true;
+      # Word forms: German first (Prüfung finds Prüfungen), English for the
+      # English material.
+      indexstemminglanguages = "german english";
+    };
+  };
+  # The GUI stems with English until changed in its preferences; preset
+  # German once, before the first start. Later changes in the GUI stay.
+  home.activation.recollGermanStemming = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    f=${config.xdg.configHome}/Recoll.org/recoll.conf
+    if ! grep -qs stemLang "$f"; then
+      mkdir -p "$(dirname "$f")"
+      if grep -qs '^\[Recoll\]' "$f"; then
+        sed -i '/^\[Recoll\]/a prefs\\query\\stemLang=german' "$f"
+      else
+        printf '%s\n' '[Recoll]' 'prefs\query\stemLang=german' >>"$f"
+      fi
+    fi
+  '';
 
   # Second browser, only for the Claude browser agent (Claude in Chrome needs a
   # Chromium engine; it does not run in Firefox). No Web Store: install the

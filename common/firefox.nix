@@ -105,6 +105,11 @@
           installation_mode = "force_installed";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/proton-pass/latest.xpi";
         };
+        # Vim keys for browsing (f: follow links, j/k: scroll, ?: help)
+        "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
+          installation_mode = "force_installed";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/vimium-ff/latest.xpi";
+        };
         # German spellcheck dictionary (languagePacks only translate the UI)
         "de-DE@dictionaries.addons.mozilla.org" = {
           installation_mode = "force_installed";

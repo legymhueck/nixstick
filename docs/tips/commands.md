@@ -130,10 +130,12 @@ zathura file.pdf               # j/k scroll, J/K or PgDn/PgUp page, gg/G start/e
 ## Printing
 
 The Kyocera FS-3820N on the home LAN is the default printer (`common/printing.nix`).
+The OKI ES4132 has two queues: `OKI_ES4132_USB` (USB cable) and `OKI_ES4132_LAN` (192.168.0.103).
 
 ```sh
 lp file.pdf                    # print (A4)
 lp -o sides=two-sided-long-edge file.pdf   # both sides
+lp -d OKI_ES4132_USB file.pdf  # print on the OKI (USB)
 lpstat -p -d                   # printers and the default one
 system-config-printer          # printer settings (GUI)
 ```
@@ -181,6 +183,18 @@ filen-sync on                  # start syncing, stays on after reboots
 filen-sync off                 # stop syncing (the files in ~/filen stay)
 filen-sync status              # on or off, service state
 filen-sync log                 # follow the sync log
+```
+
+## Full-text search (Recoll)
+
+Searches the content of Office, ODF, PDF and Markdown files in `~/GitHub/unterricht`,
+`~/filen/schule`, `~/filen/privat` and the main repo's `wissen/` (`common/apps.nix`).
+The index is updated daily; German word forms by default.
+
+```sh
+recoll                         # search GUI
+recollq WORD                   # search in the terminal (German stemming; -s english for English)
+recollindex                    # update the index now (the first run takes a while)
 ```
 
 ## Mail
