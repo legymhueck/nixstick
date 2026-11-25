@@ -8,12 +8,7 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 
 ## Open tasks on the stick
 
-- (2026-11-24) Filen was reorganised from the main system: OneDrive's `Dokumente` moved in (`schule/englisch`, `informatik`, `religion`, `verwaltung`, `schuelerdaten`, `_unsortiert`), everything renamed to lowercase/hyphens (rule: main repo `docs/tips/dateinamen.typ`), duplicates deleted, and the cloud was rebuilt as an exact copy of the main system's `~/filen`. The stick's local `~/filen` and its sync state no longer match the cloud: syncing them as they are would upload old names again (case-only renames confuse filen-cli). Never run `filen-sync on` before step 2. The sync pair also changed (`excludeDotFiles`, `disableLocalTrash`, restart trigger).
-  1. *auto:* `git -C ~/nixos pull --ff-only`, then ask the user to run `rebuild` (needs sudo).
-  2. *auto, after asking once:* `filen-sync off`; if `~/filen` holds anything not in the cloud (compare `find ~/filen -type f | wc -l` and spot-check with `filen ls`), stop and ask. Otherwise `rm -rf ~/filen ~/.config/filen-cli/sync/state` (the cloud has everything; keep `~/.config/filen-cli` itself, it holds the login).
-  3. *auto:* `df -h ~` against `filen statfs` (about 4 GB); if it does not fit, ask (a sync pair limited to `privat` would be the fix).
-  4. *auto:* `filen-sync on`, then `filen-sync status`; the first run downloads everything.
-  Done on `nixstick32` (2026-11-25); open on `nixstick`. On `nixstick32` `~/filen` was deleted while the sync was still running with its old state: the cloud survived (checked with `filen ls`), but a two-way sync can carry that deletion into the cloud. Always `filen-sync off` first, then delete.
+None (the Filen fresh start of 2026-11-24 was done on 2026-11-25).
 
 ## How it fits together
 
@@ -26,7 +21,7 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 - No install stages: the installer sets up everything in one run.
 - Foreign PCs (school PCs, in an emergency a teacher's PC) must not change and must not show that the stick booted: `common/traceless.nix` (no EFI variable writes, read-only efivarfs, no `systemd-boot-random-seed`/`systemd-pstore`, `efi_pstore` off, TPM2 units off, chrony without `rtcsync`/RTC trimming, no DHCP hostname, stable Wi-Fi MAC, SATA/NVMe hidden from udisks). `efi-traces` finds and removes traces of older versions.
 - Login: password, fingerprint (own devices only) or YubiKey (`common/yubikey.nix`, `pam_u2f`, origin `pam://nixbox` and `common/u2f_keys` shared with the main repo). gnome-keyring is unlocked by the LUKS passphrase (`pam_fde_boot_pw`, `nixos-mango/configuration.nix`).
-- Filen: `common/filen.nix` syncs `~/filen` two-way with the whole Filen drive (filen-cli, user unit `filen-sync`). The on/off switch is the flag file `~/.config/filen-cli/sync-enabled` (`filen-sync on|off`), not `systemctl --user enable`: Home Manager links the unit into `default.target` itself. Printable guide `docs/tips/filen.typ` (Typst on purpose, for printing) covers only the stick-specific part; setup, rules and troubleshooting are in the main repo nixos (`docs/setup/cloud-sync.typ`), not duplicated here.
+- Filen: `common/filen.nix` syncs `~/filen` two-way with the whole Filen drive (filen-cli, user unit `filen-sync`). The on/off switch is the flag file `~/.config/filen-cli/sync-enabled` (`filen-sync on|off`), not `systemctl --user enable`: Home Manager links the unit into `default.target` itself. Printable guide `docs/tips/filen.typ` (Typst on purpose, for printing) covers only the stick-specific part; setup, rules and troubleshooting are in the main repo nixos (`docs/setup/cloud-sync.typ`), not duplicated here. Never delete `~/filen` while the sync runs: a two-way sync can carry the deletion into the cloud (happened once on 2026-11-25, the cloud survived). `filen-sync off` first; a fresh start also removes `~/.config/filen-cli/sync/state` (the login stays).
 - Mail: `common/mail.nix` (aerc over IMAP directly, no Maildir to spare the flash; msmtp/msmtpq sends; passwords from `pass` with GPG, pinentry-qt so no curses prompt draws over aerc). One `mkAccount` block per address in `accounts.email.accounts` (first: `gymhueck`, `mail.nrw.schule`, primary); passwords are the pass entries `mail/<address>`. isync is installed, not set up. Printable tutorial `docs/tips/aerc.typ` (Typst, like the Filen guide).
 - Updates: `update` = `lock-sync` (all inputs, then nixpkgs + Mango pinned to the main repo's `flake.lock`, so Mango comes from the Cachix cache `nixbox-m`).
 
@@ -76,6 +71,8 @@ Flakes only see git-tracked files: `git add` new files before evaluating. Users 
 - Ported on 2026-11-21: `hosts/` + pre-switch disk check, YubiKey, gnome-keyring with `pam_fde_boot_pw`, udiskie service, nix-index-database + comma, Mango colors from Noctalia's template, Super+L, Bluetooth headset no-autoswitch, `tailscale --operator`, the `nixbox-m` cache.
 
 ## Status (2026-11-17)
+
+- 2026-11-25: the stick was reinstalled on 2026-11-21 as `nixstick32` because `install.sh` refuses existing names; its configuration now lives in `hosts/nixstick` again (the stale first install was removed). A reinstall of the same stick: delete its old `hosts/<name>` first, then reuse the name.
 
 - CI was red since 2026-11-13: `3b9f7f8` failed on megasync (unfree, not allowlisted; removed in `bbdf8c3`), `8a9c1b3` on the unformatted `nixos-mango/hardware-configuration.nix`. Fixed together with two evaluation warnings (`services.journald.storage` renamed to `services.journald.settings.Journal.Storage`; `programs.vscode` with VSCodium replaced by `programs.vscodium`).
 - `flake.lock` updated on 2026-11-17 (nixpkgs 2026-11-13, same revision as the main repo). `nix flake check` passed, no warnings; the dry-run builds only configuration files, wrappers, initrd and kernel modules locally (plus Mango and the unfree wrappers on a fresh stick).

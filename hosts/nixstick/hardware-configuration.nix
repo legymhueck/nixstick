@@ -33,7 +33,7 @@
   };
 
   boot.initrd.luks.devices."cryptroot".device =
-    "/dev/disk/by-uuid/bffa9d27-fcc1-4141-9acc-3d9197261448";
+    "/dev/disk/by-uuid/4c1b6070-79af-4857-bf85-8890af0d0d1a";
 
   fileSystems."/home" = {
     device = "/dev/mapper/cryptroot";
@@ -54,7 +54,7 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/0558-7B5C";
+    device = "/dev/disk/by-uuid/F06C-0CD7";
     fsType = "vfat";
     options = [
       "fmask=0077"
