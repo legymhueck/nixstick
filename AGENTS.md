@@ -10,8 +10,7 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 
 - (2026-11-25) Stick renamed from `nixstick32` back to `nixstick`; switched, rebooted, Tailscale logged in as `nixstick` (no stale entries left).
   1. Next time the stick runs at the LG monitor (Thunderbolt hub): ask whether the hub's keyboard worked at the LUKS prompt and whether the monitor came up early (initrd fixes from 2026-11-25). The user was not at that monitor on 2026-11-25.
-  2. After the next `rebuild`: is the Tailscale icon in Noctalia's tray (`services.tailscale-systray`, added 2026-11-25)? *auto:* `systemctl --user status tailscale-systray`.
-  3. On the main system (`nixssd`): `ssh-keygen -R nixstick` once, so the first install's old host key does not clash. Mention it there; it cannot be done from the stick.
+  2. On the main system (`nixssd`): `ssh-keygen -R nixstick` once, so the first install's old host key does not clash. Mention it there; it cannot be done from the stick.
 
 ## How it fits together
 
