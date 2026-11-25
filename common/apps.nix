@@ -32,10 +32,14 @@
     doublecmd
 
     # --- desktop applications ---
-    # aspell: spelling suggestions in Recoll (services.recoll below)
-    aspell
-    aspellDicts.de
-    aspellDicts.en
+    # aspell: spelling suggestions in Recoll (services.recoll below). Bundled
+    # with its dictionaries: plain aspell + aspellDicts finds them for spell
+    # checking, but not for `aspell create master`, which recollindex runs to
+    # build its suggestion dictionary ("aspell buildDict failed").
+    (aspellWithDicts (d: [
+      d.de
+      d.en
+    ]))
     pwvucontrol # audio devices and levels (headsets on foreign PCs)
     filen-cli # Filen cloud: `filen` (login, files); sync service in ./filen.nix
     # Encrypted containers/volumes (also TrueCrypt ones, shared with Windows).
@@ -122,6 +126,21 @@
       ];
       # Media files: only the file name is indexed, not the content.
       indexallfilenames = true;
+      # Images: name only, never content. Recoll's image helper rclimg is
+      # broken in nixpkgs (its Perl wrapper lacks JSON.pm), so every image
+      # failed (844 errors); EXIF data is of no use here anyway.
+      "noContentSuffixes+" = [
+        ".png"
+        ".jpg"
+        ".jpeg"
+        ".gif"
+        ".bmp"
+        ".tif"
+        ".tiff"
+        ".webp"
+        ".svg"
+        ".ico"
+      ];
       # Word forms: German first (Prüfung finds Prüfungen), English for the
       # English material.
       indexstemminglanguages = "german english";
