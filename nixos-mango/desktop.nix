@@ -188,6 +188,9 @@ in
         enabled = [
           "noctalia/screen_recorder"
           "noctalia/wallhaven"
+          # Per-monitor resolution, refresh rate, scale and position; writes
+          # ~/.config/mango/monitors.conf (see mango-monitor-rules).
+          "prponkshe/mango-displays"
         ];
         source = [
           {
@@ -236,6 +239,49 @@ in
         anchor = true;
         show_labels = false;
       };
+    };
+  };
+
+  # Noctalia's mango-displays plugin (1.3.1) writes the monitor layout as
+  # monitorrule= lines to ~/.config/mango/monitors.conf, but Mango 0.18.5 only
+  # accepts monitor_rule=. On every change, write a converted copy
+  # (monitor-rules.conf, sourced in extraConfig below) and reload Mango.
+  # Ported from the main repo nixos.
+  systemd.user.paths.mango-monitor-rules = {
+    Unit.Description = "Watch Noctalia's monitor layout for Mango";
+    Path.PathChanged = "%h/.config/mango/monitors.conf";
+    Install.WantedBy = [ "default.target" ];
+  };
+  systemd.user.services.mango-monitor-rules = {
+    Unit.Description = "Convert monitorrule= to monitor_rule= for Mango and reload it";
+    Service = {
+      Type = "oneshot";
+      ExecStart = lib.getExe (
+        pkgs.writeShellApplication {
+          name = "mango-monitor-rules";
+          runtimeInputs = [
+            pkgs.coreutils
+            pkgs.diffutils
+            pkgs.gnused
+            config.wayland.windowManager.mango.package # mmsg
+          ];
+          text = ''
+            dir="''${XDG_CONFIG_HOME:-$HOME/.config}/mango"
+            src="$dir/monitors.conf"
+            dst="$dir/monitor-rules.conf"
+            [[ -f $src ]] || exit 0
+            tmp=$(mktemp "$dst.XXXXXX")
+            sed 's/^monitorrule=/monitor_rule=/' "$src" >"$tmp"
+            if cmp -s "$tmp" "$dst"; then
+              rm -f "$tmp"
+              exit 0
+            fi
+            chmod 644 "$tmp"
+            mv "$tmp" "$dst"
+            mmsg dispatch reload_config >/dev/null 2>&1 || true
+          '';
+        }
+      );
     };
   };
 
@@ -367,8 +413,11 @@ in
     # Mango. Its hook would append this line to config.conf, which Home Manager
     # links read-only, so it is set here (the hook finds it and skips). Before
     # Noctalia's first run the file is missing: Mango logs that and uses its
-    # default colors. No color options in the settings above.
+    # default colors. No color options in the settings above. The monitor
+    # layout comes first: monitor-rules.conf, converted from the
+    # mango-displays plugin by mango-monitor-rules (above).
     extraConfig = ''
+      source = ~/.config/mango/monitor-rules.conf
       source = ~/.config/mango/noctalia.conf
     '';
   };

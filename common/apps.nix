@@ -26,6 +26,9 @@
 
     # --- free: Wayland helpers ---
     wl-clipboard
+    wdisplays # these three are used by Noctalia's mango-displays plugin
+    wl-mirror
+    wlr-randr
 
     # --- free: file manager (nixpkgs build, Qt5, cached; theme comes from
     #     Noctalia via qt5ct, configuration in ../dotfiles/doublecmd) ---
