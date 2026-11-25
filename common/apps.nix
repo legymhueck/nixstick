@@ -144,6 +144,9 @@
       # Word forms: German first (Prüfung finds Prüfungen), English for the
       # English material.
       indexstemminglanguages = "german english";
+      # Spelling suggestions: Recoll takes exactly one aspell language (by
+      # default the locale's, here English); most material is German.
+      aspellLanguage = "de";
     };
   };
   # The GUI stems with English until changed in its preferences; preset
