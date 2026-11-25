@@ -8,7 +8,11 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 
 ## Open tasks on the stick
 
-None (the Filen fresh start of 2026-11-24 was done on 2026-11-25).
+- (2026-11-25) Stick renamed from `nixstick32` back to `nixstick`; `nh os switch -H nixstick` is done, the reboot is not.
+  1. Ask the user to reboot if `hostname` still prints `nixstick32`. The reboot also activates the initrd fixes: the keyboard on the LG monitor's Thunderbolt hub at the LUKS prompt (ask whether it worked) and early i915 for the Thunderbolt monitor.
+  2. Tailscale was logged out: ask the user to run `tailscale up` so the stick joins as `nixstick`, then (*auto*) `tailscale status --self`. In the admin console remove an offline `nixstick` from the first install and a `nixstick32` entry, if listed.
+  3. On the main system (`nixssd`): `ssh-keygen -R nixstick` once, so the first install's old host key does not clash. Mention it there; it cannot be done from the stick.
+  4. *auto:* `filen-sync status` and `du -sh ~/filen`: the first download (about 3.4 GB, started 2026-11-25) should be complete. Nothing in `~/filen` is deleted while it runs.
 
 ## How it fits together
 
