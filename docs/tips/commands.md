@@ -66,6 +66,39 @@ the focus there. Super+Tab / Super+Shift+Tab go through all windows on every
 tag (`cycle-windows`), Super+Ctrl+Tab only those on the current tag; Alt+Tab
 shows them all in the overview.
 
+## School Wi-Fi (GymHueck)
+
+GymHueck is WPA2 Enterprise (802.1X, PEAP with MSCHAPv2): it needs a user name
+and a password. Noctalia's network applet did not set it up (2026-11-25: no
+profile, no attempt in NetworkManager's log), so set it up once from the
+terminal. Afterwards the applet shows GymHueck as a saved network and the stick
+connects by itself; NetworkManager keeps the password in a root-only file.
+
+```sh
+schul-wlan                     # first time: asks for user name and password, then connects
+schul-wlan BENUTZERNAME        # the same with the user name given (or change it)
+schul-wlan neu                 # forget profile and password, set up again (wrong login)
+schul-wlan status              # profile there? active?
+schul-wlan aus                 # disconnect, the profile stays
+```
+
+What the script does, by hand:
+
+```sh
+nmcli connection add type wifi con-name GymHueck ssid GymHueck \
+  wifi-sec.key-mgmt wpa-eap 802-1x.eap peap 802-1x.phase2-auth mschapv2 \
+  802-1x.identity BENUTZERNAME
+nmcli --ask connection up GymHueck      # asks for the password
+nmcli connection delete GymHueck        # start over
+```
+
+No CA certificate is set, so the stick does not check the server: a fake access
+point named GymHueck could catch the login. If the school IT hands out a
+certificate, add it with
+`nmcli connection modify GymHueck 802-1x.ca-cert /path/to/ca.pem`.
+If the connection fails, `journalctl -u NetworkManager -b` names the reason
+(NetworkManager logs only warnings here, so it may be short).
+
 ## PDFs
 
 PDFs and EPUBs open in zathura (`xdg-open`, Double Commander, and Neovim's

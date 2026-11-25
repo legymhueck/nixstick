@@ -55,6 +55,8 @@ in
       gawk
       udisks
     ] { SCHUL_SSD_ID = "ata-MILAN_II_512G_182906420963"; })
+    # nmcli comes from the system PATH (networking.networkmanager).
+    (mkScript "schul-wlan" [ gnugrep ])
     (mkScript "spell-sync" [
       coreutils
       diffutils
