@@ -40,6 +40,12 @@
       d.de
       d.en
     ]))
+    libreoffice
+    # Spell checking in LibreOffice (and Firefox): German, English.
+    hunspell
+    hunspellDicts.de_DE
+    hunspellDicts.en_GB-large
+    hunspellDicts.en_US
     pwvucontrol # audio devices and levels (headsets on foreign PCs)
     filen-cli # Filen cloud: `filen` (login, files); sync service in ./filen.nix
     # Encrypted containers/volumes (also TrueCrypt ones, shared with Windows).
@@ -86,9 +92,7 @@
   # Full-text search (Office, ODF, PDF, Markdown ...) over the folders in
   # topdirs, ported from the main repo nixos. The index (~/.recoll) is updated
   # daily by a systemd user timer, incrementally, so few writes to the flash;
-  # search with the `recoll` GUI or `recollq WORD`. Unlike the main repo no
-  # LibreOffice fallback for old .doc files antiword cannot read (LibreOffice
-  # is not on the stick).
+  # search with the `recoll` GUI or `recollq WORD`.
   services.recoll = {
     enable = true;
     startAt = "daily";
@@ -147,6 +151,22 @@
       # Spelling suggestions: Recoll takes exactly one aspell language (by
       # default the locale's, here English); most material is German.
       aspellLanguage = "de";
+      # Old .doc files antiword cannot read are converted with LibreOffice
+      # (ported from the main repo nixos). Recoll always passes --safe-mode,
+      # which makes LibreOffice show its Safe Mode dialog even with --headless.
+      # The wrapper drops that flag, forces the windowless VCL backend (svp)
+      # and uses its own profile, so neither a window appears nor the user's
+      # profile is touched.
+      sofficecmd = "${pkgs.writeShellScript "recoll-soffice" ''
+        args=()
+        for a in "$@"; do
+          [[ $a == --safe-mode ]] || args+=("$a")
+        done
+        export SAL_USE_VCLPLUGIN=svp
+        exec ${pkgs.libreoffice}/bin/soffice \
+          -env:UserInstallation=file://${config.home.homeDirectory}/.cache/recoll-libreoffice \
+          "''${args[@]}"
+      ''}";
     };
   };
   # The GUI stems with English until changed in its preferences; preset

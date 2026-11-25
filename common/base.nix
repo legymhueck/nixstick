@@ -161,6 +161,7 @@ in
         "networkmanager"
         "video"
         "audio"
+        "i2c" # ddcutil: brightness of external monitors (DDC/CI)
       ];
     };
     # Root login is disabled; use sudo from user "m" (wheel).
@@ -196,6 +197,10 @@ in
       extraSetFlags = [ "--operator=${vars.user}" ];
     };
     networking.firewall.checkReversePath = "loose"; # needed for Tailscale exit nodes
+    # ddcutil (Noctalia brightness for external monitors): i2c-dev module and
+    # "i2c" group. DDC/CI only changes the monitor's own brightness setting when
+    # asked to, nothing on the PC (common/traceless.nix).
+    hardware.i2c.enable = true;
     services.hardware.bolt.enable = true; # Thunderbolt
     # A keyboard behind a Thunderbolt device (the monitor's USB hub) is not
     # there at the LUKS prompt: with security level "user" the kernel opens the
@@ -281,6 +286,7 @@ in
       alsa-utils
       bind # dig
       brightnessctl
+      ddcutil # Noctalia: brightness of external monitors over DDC/CI
       btrfs-progs
       compsize
       cryptsetup
