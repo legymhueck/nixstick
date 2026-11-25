@@ -13,6 +13,7 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
   2. *auto, after asking once:* `filen-sync off`; if `~/filen` holds anything not in the cloud (compare `find ~/filen -type f | wc -l` and spot-check with `filen ls`), stop and ask. Otherwise `rm -rf ~/filen ~/.config/filen-cli/sync/state` (the cloud has everything; keep `~/.config/filen-cli` itself, it holds the login).
   3. *auto:* `df -h ~` against `filen statfs` (about 4 GB); if it does not fit, ask (a sync pair limited to `privat` would be the fix).
   4. *auto:* `filen-sync on`, then `filen-sync status`; the first run downloads everything.
+  Done on `nixstick32` (2026-11-25); open on `nixstick`. On `nixstick32` `~/filen` was deleted while the sync was still running with its old state: the cloud survived (checked with `filen ls`), but a two-way sync can carry that deletion into the cloud. Always `filen-sync off` first, then delete.
 
 ## How it fits together
 
