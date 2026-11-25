@@ -14,6 +14,7 @@ commands and aliases).
 | `format-and-mount` | Format and mount an encrypted LUKS + Btrfs partition |
 | `lock-sync` | Update inputs, pin nixpkgs + Mango to the main repo's lock (cached Mango), switch |
 | `luks-header-backup` | Save the stick's LUKS header to a folder |
+| `monitor-diagnose` | Record why a Thunderbolt/USB-C monitor stays black: kernel debug for thunderbolt and DRM during one guided replug, connector/bolt/output state before and after, saved to `~/monitor-diagnose/` (`--kurz`: state only) |
 | `schul-ssd` | Open the school SSD (VeraCrypt slot 1) and `abgaben.hc` on it (slot 2) from the console, password asked once; `status`, `aus` (close both, power the SSD off), `--nur-ssd` |
 | `spell-sync` | Merge Neovim's own spelling words (`dotfiles/nvim/spell/`) with the other repo (nixstick / the main repo nixos), then commit in both |
 | `ssh-permissions` | Reset permissions in `~/.ssh` (700/600/644) |

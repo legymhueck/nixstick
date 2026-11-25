@@ -197,6 +197,16 @@ in
     };
     networking.firewall.checkReversePath = "loose"; # needed for Tailscale exit nodes
     services.hardware.bolt.enable = true; # Thunderbolt
+    # A keyboard behind a Thunderbolt device (the monitor's USB hub) is not
+    # there at the LUKS prompt: with security level "user" the kernel opens the
+    # PCIe tunnel only after authorization, and boltd starts after the root
+    # disk is unlocked. The initrd authorizes the devices from vars.nix itself
+    # (by unique_id, not every device: DMA). Authorization lives only in the
+    # controller's RAM until unplug/power-off, nothing is stored on a foreign
+    # PC (traceless.nix).
+    boot.initrd.services.udev.rules = lib.concatMapStrings (d: ''
+      ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{unique_id}=="${d.unique_id}", ATTR{authorized}=="0", ATTR{authorized}="1"
+    '') vars.thunderboltInitrd;
     services.udisks2.enable = true; # mounting drives (udiskie, file manager)
 
     # No snapper: hourly snapshots wear out a stick; the repos live on GitHub.

@@ -80,8 +80,10 @@
   # Never mount, check or show them: udisks (file managers, udiskie) ignores
   # SATA and NVMe disks. USB drives (also the stick itself) and SD cards stay
   # visible. `sudo mount` still works if it is ever needed (read-only: -o ro).
+  # USB-SATA docks report ID_BUS=ata too; ID_PATH contains "-usb-" for them,
+  # so they are not ignored (otherwise udiskie shows no passphrase dialog).
   services.udev.extraRules = ''
-    SUBSYSTEM=="block", ENV{ID_BUS}=="ata|nvme", ENV{UDISKS_IGNORE}="1", ENV{UDISKS_AUTO}="0"
+    SUBSYSTEM=="block", ENV{ID_BUS}=="ata|nvme", ENV{ID_PATH}!="*-usb-*", ENV{UDISKS_IGNORE}="1", ENV{UDISKS_AUTO}="0"
   '';
 
   # --- what would write to the PC on its own ---

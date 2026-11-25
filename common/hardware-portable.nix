@@ -20,6 +20,13 @@
       "thunderbolt"
       "nvme"
       "ahci"
+      # Early KMS: thunderbolt loads here (TB disks) and tears down the
+      # firmware's DP tunnel; with the GPU driver loaded at the same time, a
+      # Thunderbolt monitor gets its new DP tunnel right away (a late i915
+      # once left the monitor black until reboot, main repo 2026-11-23). udev
+      # loads it only on Intel GPUs; amdgpu stays out (its firmware would bloat
+      # every initrd on the ESP).
+      "i915"
     ];
     boot.kernelModules = [
       "kvm-intel"

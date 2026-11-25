@@ -38,6 +38,14 @@ in
       cryptsetup
       gawk
     ])
+    # sudo comes from the system PATH. Writes only kernel debug switches (RAM).
+    (mkScript "monitor-diagnose" [
+      bolt # boltctl
+      coreutils
+      gnugrep
+      systemd # journalctl
+      wlr-randr
+    ])
     # veracrypt and sudo come from the system PATH. The school SSD (WD My
     # Passport, serial 182906420963) is whole-disk VeraCrypt, so it has no
     # label or UUID: its name under /dev/disk/by-id/ (same value as the main

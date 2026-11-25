@@ -55,6 +55,8 @@ sudo "$(nix build --no-link --print-out-paths nixpkgs#fio)/bin/fio" --name=r --f
 ```sh
 efi-traces                     # does this PC's firmware show traces of a boot? (read-only)
 efi-traces --remove            # delete them (asks, sudo)
+monitor-diagnose               # monitor stays black: record state + kernel log during one replug (sudo), before rebooting
+monitor-diagnose --kurz        # state only, no debug, no replug
 , cowsay hi                    # run a program from nixpkgs once without installing it (comma)
 ```
 

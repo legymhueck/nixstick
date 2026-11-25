@@ -10,6 +10,16 @@
   # repo nixos (pam://nixbox), so one registration (common/u2f_keys) works on
   # every stick and on the SSD.
   yubikeyOrigin = "pam://nixbox";
+  # Thunderbolt devices authorized already in the initrd (common/base.nix), so
+  # a keyboard on their USB hub works at the LUKS prompt; boltd only starts
+  # after it. unique_id as `boltctl list` prints it (uuid). The same device as
+  # in the main repo nixos (common/devices.toml).
+  thunderboltInitrd = [
+    {
+      name = "LG 38WN95C (monitor, USB hub with the Omoton keyboard)";
+      unique_id = "c8010000-0062-6c1e-0377-f0856c426202";
+    }
+  ];
   # Btrfs subvolume mount points (@, @home, @nix, @log, created by install.sh).
   btrfsMounts = [
     "/"
