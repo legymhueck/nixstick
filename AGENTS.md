@@ -8,12 +8,10 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 
 ## Open tasks on the stick
 
-- (2026-11-25) Raspberry Pi work from the stick (Tailscale `rpi`, user `michael`; open points in the main repo's `docs/setup/raspberry-pi.typ`, "Offene Punkte"). The stick got its own key `~/.ssh/id_ed25519` (`m@nixstick`, no passphrase, the stick is LUKS-encrypted); the Pi's host key is already in `known_hosts`.
-  1. Check `ssh -o BatchMode=yes rpi true` (`common/home.nix` has the host entry `rpi` with user michael and the ssh-agent; needs a `rebuild` after `git pull`). If it is refused, the user still has to add the key from `nixssd`/`x240`: `ssh rpi 'echo "<contents of ~/.ssh/id_ed25519.pub>" >> ~/.ssh/authorized_keys'`. Stop there until that is done.
-  2. Root: ask the user to run `! bash ~/GitHub/nixos_full/nixos/scripts/claude-rpi-zugriff.sh an 2h` (asks for michael's sudo password, switches off by itself).
-  3. *auto* once root works: delete `/var/lib/docker.sd-alt` (20 GB on the SD card) after checking that Docker runs from `~/samba/docker.img` (`/var/lib/docker` mounted, containers up).
-  4. Ask before: Paperless-ngx 2.17.1 → 2.20.15 → 3.5.1 (plan in the Pi doc, `pi-sichern` first). Not yet: the old Immich database `~/samba/postgres.pg14` (wait until Immich has run a few days on Postgres 18, from 2026-11-24).
-  5. In the main repo's Pi doc: add `m@nixstick` to the allowed SSH keys, tick off what was done, commit and push there.
+- (2026-11-26) Raspberry Pi work from the stick (Tailscale `rpi`, user `michael`; `ssh rpi` works with the stick's key `m@nixstick` since 2026-11-26; open points in the main repo's `docs/setup/raspberry-pi.typ`, "Offene Punkte"). Root: if `ssh rpi sudo -n true` fails, ask the user to run `! bash ~/GitHub/nixos_full/nixos/scripts/claude-rpi-zugriff.sh an 2h`.
+  1. Ask before: Paperless-ngx 2.17.1 → 2.20.15 → 3.5.1 (plan in the Pi doc, `pi-sichern` first).
+  2. Not before about 2026-11-28: the old Immich database `~/samba/postgres.pg14` (once Immich has run a few days on Postgres 18; ask first).
+  3. Log what was done in the main repo's Pi doc ("Protokoll", "Offene Punkte"), commit and push there.
 
 ## How it fits together
 
