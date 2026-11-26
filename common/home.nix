@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   vars,
   ...
 }:
@@ -160,6 +161,21 @@
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
+  };
+
+  # SSH: the agent holds the key after the first use per session (passphrase
+  # once), so scripts and Claude can run `ssh rpi '...'` afterwards.
+  # rpi = Raspberry Pi at home (Tailscale exit node, user michael), resolved via MagicDNS.
+  # The stick has its own key (m@nixstick); it must be in the Pi's authorized_keys.
+  services.ssh-agent.enable = true;
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    settings = {
+      rpi.User = "michael";
+      # last: general defaults after the specific hosts
+      "*" = lib.hm.dag.entryAfter [ "rpi" ] { AddKeysToAgent = "yes"; };
+    };
   };
 
   # GitHub login via `gh auth login`; also installs the git credential helper.
