@@ -4,6 +4,7 @@
   inputs,
   pkgs,
   osConfig,
+  vars,
   ...
 }:
 
@@ -31,17 +32,37 @@ in
   ];
 
   # Drives: udiskie in the Noctalia tray (appindicator). Clicking it mounts,
-  # unlocks (LUKS: passphrase dialog), unmounts and ejects a USB drive.
-  # Nothing is mounted automatically, and the PC's internal disks are not
-  # shown at all (common/traceless.nix).
+  # unlocks (LUKS: passphrase dialog), unmounts and ejects a USB drive. Only
+  # our own disks (vars.automountDisks) are mounted automatically when plugged
+  # in; foreign sticks wait for a click, and the PC's internal disks are not
+  # shown at all (common/traceless.nix). VeraCrypt (school SSD, abgaben.hc)
+  # stays in VeraCrypt.
   services.udiskie = {
     enable = true;
-    automount = false;
+    automount = true;
     notify = true;
     tray = "auto";
-    settings.program_options = {
-      appindicator = true;
-      file_manager = "doublecmd";
+    settings = {
+      program_options = {
+        appindicator = true;
+        file_manager = "doublecmd";
+      };
+      # The LUKS container (UUID of the LUKS header) and the file system inside
+      # (its UUID if known, else the label; generic labels like "Ventoy" need
+      # the UUID). The last entry keeps every other drive unmounted.
+      device_config =
+        map (d: {
+          id_uuid = d.luks_uuid;
+          automount = true;
+        }) (builtins.filter (d: d ? luks_uuid) vars.automountDisks)
+        ++ map (
+          d:
+          (if d ? fs_uuid then { id_uuid = d.fs_uuid; } else { id_label = d.label; })
+          // {
+            automount = true;
+          }
+        ) vars.automountDisks
+        ++ [ { automount = false; } ];
     };
   };
 

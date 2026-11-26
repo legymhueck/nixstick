@@ -20,6 +20,44 @@
       unique_id = "c8010000-0062-6c1e-0377-f0856c426202";
     }
   ];
+  # Own disks that udiskie mounts as soon as they are plugged in (allow-list,
+  # nixos-mango/desktop.nix); LUKS ones ask for the passphrase first, every
+  # other drive waits for a click in the tray. A copy of the disks with
+  # `automount = true` in the main repo nixos (common/devices.toml, overview
+  # docs/platten.typ there): change them there first, then here.
+  # luks_uuid / fs_uuid as `lsblk -o NAME,FSTYPE,LABEL,UUID` prints them.
+  automountDisks = [
+    {
+      label = "restic-backup";
+      fs_uuid = "d829cb25-b8b2-4c47-8e0a-413edb75df73";
+    }
+    {
+      label = "restic-backup-2";
+      luks_uuid = "788752bd-1004-468c-8072-154f33f9beed";
+      fs_uuid = "0662e040-7571-4f8a-a46b-8e4cd2b8e323";
+    }
+    {
+      label = "nicht-unterricht";
+      luks_uuid = "e9910e5d-d5a5-4128-954c-bbcb287a4587";
+      fs_uuid = "5a935720-89c0-4f2a-a703-6a3915da1411";
+    }
+    {
+      label = "bewertung";
+      luks_uuid = "190430a8-ab46-4e93-9503-c4d4baecdaba";
+    }
+    {
+      label = "pi-backup";
+      fs_uuid = "f78a992d-edb8-4396-ab50-ee8cdeaa500a";
+    }
+    {
+      label = "Ventoy";
+      fs_uuid = "732D-F623";
+    }
+    {
+      label = "LE";
+      fs_uuid = "7865-8A70";
+    }
+  ];
   # Btrfs subvolume mount points (@, @home, @nix, @log, created by install.sh).
   btrfsMounts = [
     "/"
