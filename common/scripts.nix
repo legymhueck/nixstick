@@ -50,6 +50,13 @@ in
     # Passport, serial 182906420963) is whole-disk VeraCrypt, so it has no
     # label or UUID: its name under /dev/disk/by-id/ (same value as the main
     # repo's common/devices.toml).
+    (mkScript "rpi-platte" [
+      coreutils
+      gawk
+      gnugrep
+      sshfs
+      util-linux
+    ])
     (mkScriptEnv "schul-ssd" [
       coreutils
       gawk
