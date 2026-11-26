@@ -85,6 +85,33 @@
           name = "NixOS Packages";
           url = "https://search.nixos.org/packages";
         }
+        # Services on the Raspberry Pi, via Tailscale (main repo nixos: docs/setup/raspberry-pi.typ).
+        # Change to the ZOTAC's name after the move (main repo: docs/setup/heimserver-umzug.typ).
+        {
+          name = "Raspberry Pi";
+          children = [
+            {
+              name = "Nextcloud";
+              url = "https://rpi.bone-vibes.ts.net/";
+            }
+            {
+              name = "Immich";
+              url = "https://rpi.bone-vibes.ts.net:8443/";
+            }
+            {
+              name = "Paperless-ngx";
+              url = "https://rpi.bone-vibes.ts.net:10000/";
+            }
+            {
+              name = "Pi-hole";
+              url = "http://rpi:8080/admin/";
+            }
+            {
+              name = "Portainer";
+              url = "https://rpi.bone-vibes.ts.net:9443/";
+            }
+          ];
+        }
       ];
 
       SearchEngines = {
