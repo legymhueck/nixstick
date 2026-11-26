@@ -8,7 +8,7 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 
 ## Open tasks on the stick
 
-- (2026-11-26) Raspberry Pi from the stick (Tailscale `rpi`, user `michael`, key `m@nixstick`; root: if `ssh rpi sudo -n true` fails, ask the user to run `! bash ~/GitHub/nixos_full/nixos/scripts/claude-rpi-zugriff.sh an 2h`). Paperless runs 3.5.1 since 2026-11-26: ask the user whether login over HTTPS, the Paperless app and an upload via `consume/` work; then follow "Offene Punkte" in the main repo's `docs/setup/raspberry-pi.typ` and log there, commit and push.
+- (2026-11-26) Raspberry Pi from the stick (Tailscale `rpi`, user `michael`, key `m@nixstick`; root: if `ssh rpi sudo -n true` fails, ask the user to run `! bash ~/GitHub/nixos_full/nixos/scripts/claude-rpi-zugriff.sh an 2h`). Paperless runs 3.5.1 since 2026-11-26 (upload and HTTPS login checked, duplicates rejected): ask whether the Paperless app works after logging in again; then follow "Offene Punkte" in the main repo's `docs/setup/raspberry-pi.typ` and log there, commit and push.
 
 ## How it fits together
 
