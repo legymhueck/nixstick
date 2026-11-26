@@ -239,6 +239,18 @@ ssh-permissions                # fix permissions in ~/.ssh
 fingerprint                    # enroll a fingerprint (fprintd) -- only on your own devices
 ```
 
+## Raspberry Pi backup (pi-sichern)
+
+Same backup as from the main system: plug in the disk `pi-backup`, mount it in the udiskie tray
+(`/run/media/m/pi-backup`). The restic password is `~/.config/restic/pi-passwort` (from KeePassXC, once).
+
+```sh
+pi-sichern                     # dumps on the Pi, then restic (photos, Nextcloud, Paperless, Docker config)
+pi-sichern --check             # now and then: verify the repository afterwards
+pi-sichern restic snapshots    # list the snapshots
+udisksctl unmount -b /dev/disk/by-label/pi-backup   # or unmount in the udiskie tray before unplugging
+```
+
 ## Everyday helpers
 
 ```sh
