@@ -133,8 +133,8 @@
             cd ${self}
             statix check .
             deadnix --fail --exclude "**/hardware-configuration.nix" .
-            shellcheck install.sh scripts/*.sh
-            shfmt -d -i 2 -ci install.sh scripts/*.sh
+            shellcheck install.sh scripts/*.sh docs/tips/*.sh
+            shfmt -d -i 2 -ci install.sh scripts/*.sh docs/tips/*.sh
             touch $out
           '';
     };
