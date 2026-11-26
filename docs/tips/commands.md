@@ -250,7 +250,9 @@ rpi-platte status              # mounted or not, free space
 rpi-platte aus                 # unmount (close programs that use it first)
 ```
 
-Do not change the folders `nextcloud`, `immich` and `postgres` there: they belong to the services on the Pi.
+The file chooser hides `immich`, `postgres`, `docker.img` and `backups` (file `.hidden` on the Pi's disk; Ctrl+H
+shows them). They belong to root or to the services and cannot be changed from here anyway; `nextcloud` holds
+your own Nextcloud files and can be used normally (Nextcloud notices changes).
 
 ## Raspberry Pi backup (pi-sichern)
 
