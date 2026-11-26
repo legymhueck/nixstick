@@ -9,8 +9,7 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 ## Open tasks on the stick
 
 - (2026-11-25) Stick renamed from `nixstick32` back to `nixstick`; switched, rebooted, Tailscale logged in as `nixstick` (no stale entries left).
-  1. Next time the stick runs at the LG monitor (Thunderbolt hub): ask whether the hub's keyboard worked at the LUKS prompt and whether the monitor came up early (initrd fixes from 2026-11-25). The user was not at that monitor on 2026-11-25.
-  2. On the main system (`nixssd`): `ssh-keygen -R nixstick` once, so the first install's old host key does not clash. Mention it there; it cannot be done from the stick.
+  1. On the main system (`nixssd`): `ssh-keygen -R nixstick` once, so the first install's old host key does not clash. Mention it there; it cannot be done from the stick.
 - (2026-11-25) Raspberry Pi work from the stick (Tailscale `rpi`, user `michael`; open points in the main repo's `docs/setup/raspberry-pi.typ`, "Offene Punkte"). The stick got its own key `~/.ssh/id_ed25519` (`m@nixstick`, no passphrase, the stick is LUKS-encrypted); the Pi's host key is already in `known_hosts`.
   1. Check `ssh -o BatchMode=yes michael@rpi true`. If it is refused, the user still has to add the key from `nixssd`/`x240`: `ssh michael@rpi 'echo "<contents of ~/.ssh/id_ed25519.pub>" >> ~/.ssh/authorized_keys'`. Stop there until that is done.
   2. Root: ask the user to run `! bash ~/GitHub/nixos_full/nixos/scripts/claude-rpi-zugriff.sh an 2h` (asks for michael's sudo password, switches off by itself).
