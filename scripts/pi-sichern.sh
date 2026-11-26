@@ -5,7 +5,8 @@
 # (restic repository restic/pi, password ~/.config/restic/pi-passwort):
 #   1. fresh dumps of the Nextcloud, Immich and Paperless databases on the Pi
 #      (~/samba/backups/db-dumps, on the Pi's disk)
-#   2. the Pi mounted read-only as root via SSHFS (sudo sftp-server on the Pi)
+#   2. the Pi mounted read-only as root via SSHFS (sudo sftp-server -R on the Pi:
+#      read-only on the Pi's side too; sudoers rule 20-pi-sichern)
 #   3. restic backup: the Pi's disk, the Nextcloud and Paperless Docker volumes,
 #      ~/Docker (compose files, .env, Portainer); then forget + prune
 #   pi-sichern                  # back up now
@@ -98,7 +99,7 @@ REMOTE
 echo "==> Mounting the Pi read-only"
 mkdir -p "$wurzel"
 mountpoint -q "$wurzel" || sshfs -o ro,reconnect,ServerAliveInterval=15 \
-  -o sftp_server="/usr/bin/sudo /usr/lib/openssh/sftp-server" rpi:/ "$wurzel"
+  -o sftp_server="/usr/bin/sudo /usr/lib/openssh/sftp-server -R" rpi:/ "$wurzel"
 trap 'fusermount3 -u "$wurzel" 2>/dev/null || true; rmdir "$wurzel" 2>/dev/null || true' EXIT
 
 echo "==> restic backup"
