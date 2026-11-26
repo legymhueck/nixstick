@@ -68,6 +68,7 @@ Flakes only see git-tracked files: `git add` new files before evaluating. Users 
 - Paths: `~/nixos` always means the config of the system that is running. On a stick it is this repo; the main repo, if cloned, lives elsewhere (here `~/GitHub/nixos_full/nixos`). Booted from `nixssd`, `~/nixos` is the main repo. In docs, name the repos (nixstick, the main repo nixos), never write `~/nixos` for the main repo.
 - Differences on purpose: docs here are English Markdown (`docs/tips/`), not German Typst; applications live in one file (`common/apps.nix`), not in four stage lists; no `pkgs/`.
 - Ported from the main repo on 2026-11-17: `shfmt` in the lint check, the evaluation preflight in `install.sh`, `actions/checkout` v7.0.1.
+- The other direction too (user's rule, 2026-11-26): every new feature made here (desktop, Firefox, scripts, ...) is ported to the main repo in the same session, adapted to its paths and German docs (`docs/befehle.typ`); commit and push both. Skip only what is stick-specific (`common/traceless.nix`, `hosts/`, `install.sh`, flash-sparing settings). Ported back on 2026-11-26: Firefox folder RPi, `pi-sichern --ziel`, touchpad gestures.
 - Ported on 2026-11-21: `hosts/` + pre-switch disk check, YubiKey, gnome-keyring with `pam_fde_boot_pw`, udiskie service, nix-index-database + comma, Mango colors from Noctalia's template, Super+L, Bluetooth headset no-autoswitch, `tailscale --operator`, the `nixbox-m` cache.
 
 ## Status (2026-11-17)
