@@ -66,6 +66,10 @@ the focus there. Super+Tab / Super+Shift+Tab go through all windows on every
 tag (`cycle-windows`), Super+Ctrl+Tab only those on the current tag; Alt+Tab
 shows them all in the overview.
 
+Touchpad: swipe 3 fingers left/right to move through the windows of the row,
+up to open the overview and down to close it; 4 fingers left/right switch to
+the next/previous tag with windows.
+
 ## School Wi-Fi (GymHueck)
 
 GymHueck is WPA2 Enterprise (802.1X, PEAP with MSCHAPv2): it needs a user name

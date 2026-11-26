@@ -354,6 +354,20 @@ in
         "NONE,btn_middle,togglemaximizescreen,0"
         "SUPER,btn_right,moveresize,curresize"
       ];
+      # Touchpad swipes, the same actions as the keys: 3 fingers sideways move
+      # through the windows of the scroller row (Super+Left/Right); up/down
+      # opens and closes the overview (Alt+Tab; vertical focus is of little use
+      # in a single scroller row). 4 fingers sideways switch to the
+      # next/previous tag that has windows. Tap-to-click and disable-while-
+      # typing are Mango's defaults.
+      gesturebind = [
+        "none,left,3,focusdir,left"
+        "none,right,3,focusdir,right"
+        "none,up,3,enteroverview"
+        "none,down,3,leaveoverview"
+        "none,left,4,viewnext_have_client"
+        "none,right,4,viewprev_have_client"
+      ];
       layer_rule = [ "no_animation:1, no_blur:1, layer_name:selection" ];
       allow_tearing = 2;
       sync_obj_enable = 1;
