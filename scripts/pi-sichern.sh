@@ -13,6 +13,9 @@
 #   pi-sichern --check          # afterwards "restic check"
 #   pi-sichern restic <args>    # restic with repository and password preset,
 #                               # e.g. pi-sichern restic snapshots
+#   pi-sichern --ziel DIR ...   # another disk instead of pi-backup (repository
+#                               # DIR/restic/pi, same password), e.g. the off-site
+#                               # copy on schul-ssd: --ziel /tmp/veracrypt_mnt1
 # Needs: disk pi-backup mounted (udiskie tray), ssh rpi without prompt.
 # Restore and details: the main repo nixos, docs/setup/raspberry-pi.typ.
 set -euo pipefail
@@ -29,25 +32,40 @@ if [[ -z ${SSH_AUTH_SOCK:-} && -S $XDG_RUNTIME_DIR/ssh-agent ]]; then
 fi
 
 pruefen=false
-case "${1:-}" in
-  -h | --help)
-    usage
-    exit 0
-    ;;
-  restic)
-    shift
-    exec restic "$@"
-    ;;
-  --check) pruefen=true ;;
-  "") ;;
-  *)
-    echo "Unknown argument: $1 (see --help)" >&2
-    exit 2
-    ;;
-esac
+ziel_name=pi-backup
+while (($#)); do
+  case "$1" in
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    --ziel)
+      [[ -n ${2:-} ]] || {
+        echo "--ziel needs a directory (see --help)" >&2
+        exit 2
+      }
+      platte=${2%/}
+      ziel_name=$platte
+      export RESTIC_REPOSITORY=$platte/restic/pi
+      shift 2
+      ;;
+    restic)
+      shift
+      exec restic "$@"
+      ;;
+    --check)
+      pruefen=true
+      shift
+      ;;
+    *)
+      echo "Unknown argument: $1 (see --help)" >&2
+      exit 2
+      ;;
+  esac
+done
 
 [[ -d $platte ]] || {
-  echo "Disk pi-backup is not mounted ($platte). Plug it in and mount it in the udiskie tray." >&2
+  echo "Disk $ziel_name is not mounted ($platte). Plug it in and mount it in the udiskie tray." >&2
   exit 1
 }
 [[ -f $RESTIC_PASSWORD_FILE ]] || {

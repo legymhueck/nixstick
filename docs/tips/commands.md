@@ -270,6 +270,14 @@ pi-sichern restic snapshots    # list the snapshots
 udisksctl unmount -b /dev/disk/by-label/pi-backup   # or unmount in the udiskie tray before unplugging
 ```
 
+Off-site copy on the school SSD (VeraCrypt, mounted at `/tmp/veracrypt_mnt1`; the slot number can differ):
+the same backup into its own restic repository `restic/pi` there, same password. Run it every few weeks.
+
+```sh
+pi-sichern --ziel /tmp/veracrypt_mnt1                     # back up to schul-ssd
+pi-sichern --ziel /tmp/veracrypt_mnt1 restic snapshots    # its snapshots
+```
+
 ## Everyday helpers
 
 ```sh
