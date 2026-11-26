@@ -52,6 +52,7 @@
     pwvucontrol # audio devices and levels (headsets on foreign PCs)
     filen-cli # Filen cloud: `filen` (login, files); sync service in ./filen.nix
     newsflash # RSS reader (local feeds, OPML import from Feeder on the phone)
+    proton-authenticator # TOTP 2FA codes (Proton account sync optional)
     # Encrypted containers/volumes (also TrueCrypt ones, shared with Windows).
     # Unfree (TrueCrypt licence), so not cached: built locally, a few minutes.
     # Mounting asks for the sudo password (device-mapper).

@@ -300,6 +300,7 @@ IMS status and the debloat log: printable cheat sheet `docs/tips/phone.typ`.
 , scrcpy --no-audio            # show and control the phone screen in a window
 , adb shell pm list packages -3   # apps you installed
 newsflash                      # RSS reader on the stick; feeds from Feeder via OPML export
+proton-authenticator           # 2FA codes (TOTP); import from other apps, Proton sync optional
 ```
 
 One feed list for both readers: `~/filen/feeds.opml` (Filen keeps it in the
