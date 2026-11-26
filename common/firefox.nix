@@ -77,6 +77,11 @@
           url = "https://gym-huckelhoven.webuntis.com/WebUntis/?school=gym-huckelhoven#/basic/login";
         }
         {
+          # Redirects to id.cornelsen.de with a fresh OAuth state
+          name = "Cornelsen";
+          url = "https://www.cornelsen.de/shop/ccustomer/oauth/login";
+        }
+        {
           name = "NixOS Packages";
           url = "https://search.nixos.org/packages";
         }
