@@ -250,3 +250,15 @@ sf                             # failed systemd units
 journalInfo                    # errors of the current boot
 programPath firefox            # where a command really lives in /nix/store
 ```
+
+## Phone (Pixel 6, ADB)
+
+USB debugging on, plug in, tap Allow on the phone. Dial codes, settings paths,
+IMS status and the debloat log: printable cheat sheet `docs/tips/phone.typ`.
+
+```sh
+, adb devices                  # "device" = ok, "unauthorized" = tap Allow on the phone
+, scrcpy --no-audio            # show and control the phone screen in a window
+, adb shell pm list packages -3   # apps you installed
+newsflash                      # RSS reader on the stick; feeds from Feeder via OPML export
+```
