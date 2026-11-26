@@ -262,3 +262,7 @@ IMS status and the debloat log: printable cheat sheet `docs/tips/phone.typ`.
 , adb shell pm list packages -3   # apps you installed
 newsflash                      # RSS reader on the stick; feeds from Feeder via OPML export
 ```
+
+One feed list for both readers: `~/filen/feeds.opml` (Filen keeps it in the
+cloud). No sync of read status: after a change, import the file again in
+Feeder (menu > Import feeds from OPML) and NewsFlash (menu > Import OPML).
