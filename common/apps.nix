@@ -6,8 +6,7 @@
 
 {
   # The single spot for applications, free and unfree: everything from the
-  # nixpkgs applications and the local packages from ../pkgs that belongs on
-  # the desktop. (The browser is configured in ./firefox.nix, system-wide CLI
+  # nixpkgs applications that belong on the desktop (no local packages). (The browser is configured in ./firefox.nix, system-wide CLI
   # tools in ./base.nix; desktop plumbing for Mango is in nixos-mango/.)
   #
   # Unfree applications also need a pname entry in the allowlist in ./base.nix
@@ -22,6 +21,7 @@
     p7zip
     ripgrep
     unzip
+    yt-dlp
     zip
 
     # --- free: Wayland helpers ---
@@ -218,6 +218,18 @@
     # (nixos-mango/desktop.nix). Missing file (before the first theme run):
     # zathura warns and keeps its default colors.
     extraConfig = "include noctaliarc";
+  };
+
+  # Video player: mpv (Wayland-native, cached). Plays URLs via yt-dlp
+  # (`mpv <url>`); yt-dlp above is the standalone downloader. The default for
+  # video and audio in nixos-mango/home.nix.
+  programs.mpv = {
+    enable = true;
+    config = {
+      hwdec = "auto-safe"; # VA-API where the PC's GPU supports it, else software
+      vo = "gpu-next";
+      save-position-on-quit = false; # no watch_later files: spare the flash
+    };
   };
 
   # VSCodium (free build of VS Code) with the extensions for both repos; only

@@ -45,6 +45,11 @@
       "inode/directory" = [ "doublecmd.desktop" ];
       "application/pdf" = [ "org.pwmt.zathura-pdf-mupdf.desktop" ];
       "application/epub+zip" = [ "org.pwmt.zathura-pdf-mupdf.desktop" ];
+      "video/mp4" = [ "mpv.desktop" ];
+      "video/x-matroska" = [ "mpv.desktop" ];
+      "video/webm" = [ "mpv.desktop" ];
+      "audio/mpeg" = [ "mpv.desktop" ];
+      "audio/flac" = [ "mpv.desktop" ];
     };
   };
 }

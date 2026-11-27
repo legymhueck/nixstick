@@ -111,6 +111,19 @@ picker or explorer); Firefox is still there for filling in forms. In Neovim,
 every new export. In a `.typ` file, `<leader>rp` runs `typst watch` and opens the PDF in zathura: it updates on every save. Exports land in `out/` next to the source (git-ignored).
 Printable cheat sheet: `docs/tips/zathura.typ`.
 
+## Video
+
+Videos and audio files open in mpv (`xdg-open`, Double Commander). mpv also
+plays web videos directly via yt-dlp; `yt-dlp` alone downloads them.
+
+```sh
+mpv file.mp4                   # Space pause, ←/→ seek 5 s, ↑/↓ 1 min, f fullscreen
+                               # 9/0 volume, m mute, [/] speed, s screenshot, q quit
+mpv 'https://youtu.be/…'       # stream a web video
+yt-dlp 'https://youtu.be/…'    # download it into the current directory
+yt-dlp -x --audio-format mp3 'URL'   # audio only
+```
+
 ## Spelling in Neovim
 
 Markdown and Typst files are spell-checked (German and English). `]s` / `[s`
