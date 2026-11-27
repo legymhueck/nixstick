@@ -8,7 +8,7 @@ Booted from a stick (`hostname` is `nixstick*`), work through "Open tasks on the
 
 ## Open tasks on the stick
 
-- (2026-11-26) Raspberry Pi from the stick (Tailscale `rpi`, user `michael`, key `m@nixstick`; root: if `ssh rpi sudo -n true` fails, ask the user to run `! bash ~/GitHub/nixos_full/nixos/scripts/claude-rpi-zugriff.sh an 2h`). Paperless 3.5.1 and its app work (2026-11-26). Off-site backup to schul-ssd works since 2026-11-26 (`pi-sichern --ziel`). Left in "Offene Punkte": NextcloudPi `apt purge`, not before mid-December 2026 in the main repo's `docs/setup/raspberry-pi.typ` and log there, commit and push.
+- (2026-11-26) Raspberry Pi from the stick (Tailscale `rpi`, user `michael`, key `m@nixstick`; root: if `ssh rpi sudo -n true` fails, ask the user to run `! bash ~/GitHub/nixos_full/nixos/scripts/claude-rpi-zugriff.sh an 2h`). Paperless 3.5.1 and its app work (2026-11-26). Off-site backup to schul-ssd works since 2026-11-26 (`pi-sichern --ziel`). NextcloudPi leftovers purged on 2026-11-27. Left in "Offene Punkte": from mid-December 2026 delete the backups `~/samba/backups/ncp-alt-2026-11-24`, `ncp-reste-2026-11-17`, `ncp-reste-2026-11-27` on the Pi if nothing is missing, log it in the main repo's `docs/setup/raspberry-pi.typ`, commit and push.
 
 ## How it fits together
 
