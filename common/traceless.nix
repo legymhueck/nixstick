@@ -62,6 +62,13 @@
   services.chrony = {
     enable = true;
     enableRTCTrimming = false;
+    # Step the clock whenever it is off by more than 1 s, not only in the
+    # first 3 updates (the default `makestep 0.1 3`): after a suspend on a PC
+    # whose RTC keeps local time the clock came back 1 h fast (2026-11-28),
+    # and slewing an hour takes about 12 h. The option's `limit` only takes
+    # positive numbers, hence extraConfig for -1 (= always).
+    makestep.enable = false;
+    extraConfig = "makestep 1 -1";
   };
 
   # --- network ---
