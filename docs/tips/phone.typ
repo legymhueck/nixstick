@@ -218,5 +218,5 @@ apps: Moodle, Untis, Wörterbücher, Thunderbird.
   [2026-11-28],
   [Calendar and tasks from Nextcloud on the Pi (section 8): Fossify Calendar and Tasks.org installed from F-Droid; DAVx5 account `Nextcloud` (four calendars, lists Aufgaben and Tickets); the old DAVx5 account `michael.lehnen@gymhueck.de` (LOGINEO, 0 calendars) deleted. DAVx5 and Tailscale exempt from Data saver and battery optimisation. Fossify shows the Nextcloud calendars plus the own Google calendars until the move, default calendar Privat, contact birthdays added.],
   [2026-11-28 (later)],
-  [Brave uninstalled; its 1909 bookmarks exported first to `~/filen/privat/lesezeichen/brave-handy-2026-11-28.html` (Brave → Bookmarks → ⋮ → Export bookmarks). Home screen suggestions in the dock off. Fossify Calendar event list widget on home page 2.],
+  [Brave uninstalled; its 1909 bookmarks exported first to `~/filen/privat/lesezeichen/brave-handy-2026-11-28.html` (Brave → Bookmarks → ⋮ → Export bookmarks). Home screen suggestions in the dock off. Fossify Calendar event list widget on home page 2. Google Tasks uninstalled (Tasks.org replaces it; tasks kept in the Google account stay there).],
 )
