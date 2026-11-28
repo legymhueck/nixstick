@@ -11,7 +11,7 @@ The task holds only the number and the subject (no mail text: data
 protection). A task you complete or delete by hand is left alone: a deleted one
 is recreated only while its ticket is still open and its mails are younger than
 the window. Passwords come from GNOME Keyring entries of this script's own
-(see `tickets-sync setup`), never from a file.
+(`tickets-sync setup` stores them), never from a file.
 """
 
 import argparse
@@ -222,16 +222,31 @@ def run(days, dry):
 
 
 def setup():
-    print("Store the passwords once in GNOME Keyring (each command asks for one):\n")
-    for a in MAILBOXES:
-        print(
-            f"  secret-tool store --label='tickets-sync {a}' service tickets-sync account {a}"
+    """Create the keyring entries; secret-tool asks for each password itself."""
+    for account in [*MAILBOXES, "nextcloud"]:
+        what = (
+            "Nextcloud app password 'tickets-sync'"
+            if account == "nextcloud"
+            else account
         )
-    print(
-        "  secret-tool store --label='tickets-sync nextcloud' service tickets-sync account nextcloud"
-        "   # a Nextcloud app password named tickets-sync"
-    )
-    print("\nMailboxes without an entry are skipped.")
+        have = " (already stored)" if secret(account) else ""
+        if input(
+            f"Store the password for {what}{have}? [y/N] "
+        ).strip().lower() not in ("y", "j"):
+            continue
+        subprocess.run(
+            [
+                "secret-tool",
+                "store",
+                f"--label=tickets-sync {account}",
+                "service",
+                "tickets-sync",
+                "account",
+                account,
+            ],
+            check=False,
+        )
+    print("Done. Mailboxes without an entry are skipped. Test: tickets-sync --dry-run")
 
 
 def main():

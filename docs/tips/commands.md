@@ -278,7 +278,7 @@ Tickets (phone: Tasks.org, PC: Endeavour), with only number and subject. A user 
 the task is completed when the ticket's "wurde abgeschlossen" mail arrives.
 
 ```sh
-tickets-sync setup             # once: shows the secret-tool commands (one password per mailbox + Nextcloud)
+tickets-sync setup             # once: asks for the password of each mailbox + the Nextcloud app password
 tickets-sync --dry-run         # what would change
 tickets-sync                   # run now (the timer does this every 15 minutes)
 systemctl --user list-timers tickets-sync

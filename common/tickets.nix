@@ -3,7 +3,7 @@
 # (IMAP, read-only, only Subject and Date of mail from service@regioit.de) and
 # one task per ticket number is created, then completed when the ticket's
 # "wurde abgeschlossen" mail arrives. Only number and subject go into the task.
-# Passwords: GNOME Keyring entries of its own, `tickets-sync setup` lists them.
+# Passwords: GNOME Keyring entries of its own, `tickets-sync setup` stores them.
 { pkgs, ... }:
 
 let

@@ -21,5 +21,5 @@ commands and aliases).
 | `schul-wlan` | Connect to the school Wi-Fi GymHueck (802.1X, PEAP/MSCHAPv2): creates the profile on first use, asks for user name and password; `status`, `aus`, `neu` |
 | `spell-sync` | Merge Neovim's own spelling words (`dotfiles/nvim/spell/`) with the other repo (nixstick / the main repo nixos), then commit in both |
 | `ssh-permissions` | Reset permissions in `~/.ssh` (700/600/644) |
-| `tickets-sync` | Regio-IT tickets (mail from `service@regioit.de` in the LOGINEO mailboxes, read-only, subject only) become tasks in the Nextcloud list Tickets and are completed with the ticket; user timer every 15 min (`common/tickets.nix`); `setup` lists the one-time keyring entries, `--dry-run`, `--days N` |
+| `tickets-sync` | Regio-IT tickets (mail from `service@regioit.de` in the LOGINEO mailboxes, read-only, subject only) become tasks in the Nextcloud list Tickets and are completed with the ticket; user timer every 15 min (`common/tickets.nix`); `setup` stores the passwords in the keyring (asks for each), `--dry-run`, `--days N` |
 | `update-check` | Show which flake inputs have newer upstream commits (read-only) |
