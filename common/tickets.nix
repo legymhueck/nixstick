@@ -22,6 +22,9 @@ in
 
   systemd.user.services.tickets-sync = {
     Unit.Description = "Regio-IT tickets to Nextcloud tasks";
+    # Never started by a switch: a run takes minutes (all folders of five
+    # mailboxes) and the switch would wait for it; the timer picks up changes.
+    Unit.X-RestartIfChanged = false;
     Service = {
       Type = "oneshot";
       ExecStart = "${tickets-sync}/bin/tickets-sync";
