@@ -172,7 +172,7 @@ Tailscale must be connected.
 *DAVx5 account (once).* Install Tasks.org first, then DAVx5 offers task sync. DAVx5 → *Add account* →
 *Nextcloud* → server address `https://rpi.bone-vibes.ts.net` → *Login* → log in in the browser → *Grant access*
 → close the tab → account name `Nextcloud` → *Finish*. In the account, tab *CalDAV*: switch on *Aufgaben*,
-*Eltern*, *Familie*, *Privat*, *Schule*, *Tickets* (not *Personal*, not *Contact birthdays*) → *Synchronise now*.
+*Eltern*, *Familie*, *Privat*, *Schule*, *Tickets* (not *Archiv*, not *Contact birthdays*; the CardDAV tab stays off, contacts come from Google) → *Synchronise now*.
 If DAVx5 asks for permissions: *Manage permissions* → allow calendar and tasks (over ADB:
 `pm grant at.bitfire.davdroid android.permission.WRITE_CALENDAR`, the same for `READ_CALENDAR`,
 `org.tasks.permission.READ_TASKS`, `org.tasks.permission.WRITE_TASKS`). The login creates its own app password
