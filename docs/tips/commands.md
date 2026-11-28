@@ -261,8 +261,8 @@ fingerprint                    # enroll a fingerprint (fprintd) -- only on your 
 Your files on the Pi's disk as a normal folder `~/rpi-platte`, over SSH: at home and anywhere Tailscale is on, also
 at school. It shows exactly what Nextcloud shows as the folder `dateien` (on the Pi `~/samba/dateien`, mounted via
 the bindfs view `~/dateien`, so files you add stay editable in Nextcloud). The services' data (`docker.img`,
-`immich`, `postgres`, `backups`) stays outside and is reached with `ssh rpi`. Samba (`smb://192.168.2.3/samba`,
-whole disk) only works at home.
+`immich`, `postgres`, `backups`) stays outside and is reached with `ssh rpi`. Samba (`smb://192.168.2.3/samba`)
+shows the same folder but only works at home.
 
 ```sh
 rpi-platte                     # mount at ~/rpi-platte (adds a bookmark "RPi-Platte" once)
