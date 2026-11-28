@@ -201,6 +201,8 @@ Fossify Calendar → *Event list* (or *Monthly*) → drop it at the top and pull
 thirds of the height. Optional below it: Tasks.org widget with the list *Tickets*. In the bottom row the school
 apps: Moodle, Untis, Wörterbücher, Thunderbird.
 
+*Fixed dock.* Home settings → Suggestions → *Suggestions on Home screen* off, otherwise Google swaps suggested apps into free dock slots. Adding a widget that will not drop: long-press the app icon → *Widgets* → tap the widget → *Add* (Fossify then asks for its settings, confirm with *OK*).
+
 == 9. Changes so far
 
 #table(
