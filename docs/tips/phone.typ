@@ -199,7 +199,9 @@ Tailscale went to sleep and DAVx5 could not reach the Pi.
 stays, it is the mail program for the LOGINEO mailboxes and the tickets). Long-press an empty spot → *Widgets* →
 Fossify Calendar → *Event list* (or *Monthly*) → drop it at the top and pull it to full width and about two
 thirds of the height. Optional below it: Tasks.org widget with the list *Tickets*. In the bottom row the school
-apps: Moodle, Untis, Wörterbücher, Thunderbird.
+apps: Moodle, Untis, Wörterbücher, Thunderbird. Widget colours are set apart from the app's theme: Fossify
+Calendar → Settings → *Widgets* → *Customize widget colors* → *Background color* dark, *Text color* white → *OK*
+(2026-11-28 it showed red text on red; if it still clashes, turn off *Use system colors* / Material You there).
 
 *Fixed dock.* Home settings → Suggestions → *Suggestions on Home screen* off, otherwise Google swaps suggested apps into free dock slots. Adding a widget that will not drop: long-press the app icon → *Widgets* → tap the widget → *Add* (Fossify then asks for its settings, confirm with *OK*).
 
