@@ -162,7 +162,46 @@ Run the setup again (it is safe to repeat), from the stick with the phone on ADB
 # in the terminal:  bash /mnt/shared/Download/vm/setup.sh   (log: Download/vm/setup.log)
 ```
 
-== 8. Changes so far
+== 8. Calendar and tasks (Nextcloud on the Pi)
+
+Own appointments and tasks live in Nextcloud on the Pi (calendars *Schule*, *Privat*, *Eltern*, *Familie*;
+task lists *Aufgaben*, *Tickets*). DAVx5 syncs them into Android; *Fossify Calendar* shows the appointments,
+*Tasks.org* the tasks (both from F-Droid). The Nextcloud app is not needed. Everything runs over Tailscale, so
+Tailscale must be connected.
+
+*DAVx5 account (once).* Install Tasks.org first, then DAVx5 offers task sync. DAVx5 → *Add account* →
+*Nextcloud* → server address `https://rpi.bone-vibes.ts.net` → *Login* → log in in the browser → *Grant access*
+→ close the tab → account name `Nextcloud` → *Finish*. In the account, tab *CalDAV*: switch on *Aufgaben*,
+*Eltern*, *Familie*, *Privat*, *Schule*, *Tickets* (not *Personal*, not *Contact birthdays*) → *Synchronise now*.
+If DAVx5 asks for permissions: *Manage permissions* → allow calendar and tasks (over ADB:
+`pm grant at.bitfire.davdroid android.permission.WRITE_CALENDAR`, the same for `READ_CALENDAR`,
+`org.tasks.permission.READ_TASKS`, `org.tasks.permission.WRITE_TASKS`). The login creates its own app password
+(Nextcloud → Settings → Security lists it as DAVx5). Tailscale must be connected, otherwise DAVx5 says "Unable
+to resolve host".
+
+*Fossify Calendar.* Settings → *CalDAV sync* on → tick the four Nextcloud calendars. Until the old appointments
+have moved, the own Google calendars are ticked too (`michael.lehnen@gmail.com`: main calendar, Schule,
+Familie, Feiertage; `le.gymhueck@gmail.com`: GymHueck); untick them there later. Settings → *Default calendar* =
+*Privat (Nextcloud)*, so new appointments never land in Google. Birthdays: ⋮ → *Add contact birthdays* → *Add
+new birthdays automatically* on (they come from the contacts; Google's own birthday calendar is not visible to
+other apps). Colors per calendar: Settings → *Manage event types*. Everything here is free, nothing to buy.
+
+*Tasks.org.* The lists *Aufgaben* and *Tickets* appear under *Nextcloud* in the side menu; default list for new
+tasks (Settings → Task defaults) is *Aufgaben*. Sync and widgets are free; the paid upgrade only adds
+Tasks.org's own cloud, sharing and mail-to-task.
+
+*Keep it syncing.* DAVx5 and Tailscale are exempt from Data saver and battery optimisation (Settings → Apps →
+the app → *Mobile data* → *Unrestricted data usage*, *App battery usage* = Unrestricted; over ADB:
+`cmd netpolicy add restrict-background-whitelist <uid>`, `dumpsys deviceidle whitelist +<package>`). Before that,
+Tailscale went to sleep and DAVx5 could not reach the Pi.
+
+*School page (home screen page 2).* Long-press the Thunderbird widget → *Remove* (only the widget; the app
+stays, it is the mail program for the LOGINEO mailboxes and the tickets). Long-press an empty spot → *Widgets* →
+Fossify Calendar → *Event list* (or *Monthly*) → drop it at the top and pull it to full width and about two
+thirds of the height. Optional below it: Tasks.org widget with the list *Tickets*. In the bottom row the school
+apps: Moodle, Untis, Wörterbücher, Thunderbird.
+
+== 9. Changes so far
 
 #table(
   columns: (auto, 1fr),
@@ -174,4 +213,6 @@ Run the setup again (it is safe to repeat), from the stick with the phone on ADB
 
   [2026-11-26],
   [ReVanced (YouTube, GmsCore, Manager) uninstalled, stock YouTube enabled again. SafetyCore uninstalled (Google may push it again: check `pm list packages | grep safetycore`). YouTube Music: Play update removed, disabled, data cleared. Carrier Services (`com.google.android.ims`) enabled again. Checked: VoLTE registered, Wi-Fi calling on with "prefer Wi-Fi", blocked only on the school Wi-Fi. Uninstalled Google Fit, Lens (the Files scanner runs in Play Services and still works) and Google One. Language English (Germany) with metric, Celsius, Monday. Uninstalled Fitbit and the Samsung Galaxy Wearable leftovers (Accessory, Gear plugin; the `com.samsung.slsi.telephony.*` modem packages stay). Feeder (RSS) installed from F-Droid as the Google News replacement; on the stick: NewsFlash. Shared feed list `~/filen/feeds.opml` (24 feeds, incl. video feeds of Tagesschau, Tagesthemen, 100 Sekunden, heute, heute journal). Uninstalled Google News and BR24 (no working feed any more). Photos moved to Immich: Immich app backs up Camera, Screenshots, WhatsApp, Markup (144/144, notifications allowed for background backup); Google Photos: Play update removed, disabled, data cleared (`pm enable com.google.android.apps.photos` undoes it). The cloud library at photos.google.com is not emptied yet. Private DNS: leftover host name `dns0.eu` (service ended 2025) removed, mode stays Automatic (`settings delete global private_dns_specifier`); DNS comes from Tailscale (Pi-hole). Tailscale exit node `rpi` is preselected but off; the stale "DNS unavailable" warning cleared by reconnecting. Uninstalled (unused for months): DroidFS, NetAnalyzer, Network widget, ADAC Pannenhilfe, Libby, Google Translate (DeepL stays). Huawei AI Life + HMS Core stay for the FreeBuds 4i (noise cancelling, gestures, firmware). Caches trimmed (`pm trim-caches 999G`, about 140 MB). Removed never-opened stubs: Obtainium (Play/GitHub build; the F-Droid build stays), GPS Status 1, Clipious, one Chromium web app. Stores checked by installer (`dumpsys package <pkg> | grep installerPackageName`): F-Droid installed and updates Syncthing-Fork, Feeder, IronFox, Droid-ify and Obtainium; Accrescent, Droid-ify and Obtainium install none of the current apps; Termux (0.118.3, 2025-06), NewPipe and RustDesk were sideloaded and get no automatic updates. Accrescent uninstalled: its only app in use, IronFox, comes from F-Droid (IronFox repo, updated 2026-11-19). Droid-ify and Obtainium uninstalled too (no app was installed by them); F-Droid is the only store besides Play. Charging limited to 80 % (Settings → Battery → Charging optimisation; `settings put secure charge_optimization_mode 1`, 0 = Adaptive Charging). Developer option "Mobile data always active" off (`settings put global mobile_data_always_on 0`). Wi-Fi scanning off (Settings → Location → Location services → Wi-Fi scanning; `settings put global wifi_scan_always_enabled 0`, Bluetooth scanning was already off). pCloud uninstalled (Filen is the cloud; it was exempt from battery optimisation). Uninstalled "Vocabulary" (`com.nomtek`, English vocabulary trainer from 2022, not opened this year). Second profile `legymhueck` (user 10, full secondary user, last used 2026-10-25) deleted with all its apps and data (`pm remove-user 10`); only the main profile is left. Ente Auth uninstalled (its codes stay in the Ente account, web: auth.ente.io). Google Home uninstalled. Keep: GMX and web.de apps (they confirm logins for those accounts, Thunderbird cannot replace them). Termux 0.118.3 is F-Droid's current stable build and F-Droid-signed, so F-Droid updates it in place; its packages: `pkg upgrade` inside Termux. Google system apps not opened in 2026: Play update removed (`cmd package uninstall-system-updates`), disabled, data cleared: Recorder, Google TV, ARCore, Ambient streaming, Pixel relationships, AI icons, Pixel Stand (dreamliner), Emoji wallpaper, Magic Portrait, Creative Assistant, BetterBug, Now Playing, Tips (Android Auto stays). Uninstalled heute, WDR, 7TV (Feeder has the broadcast video feeds). About 640 MB freed. Linux Terminal enabled and set up (section 7): Debian 13.7, Tailscale device pixel-debian, key `droid@pixel-debian` on the Pi (`ssh rpi` checked).],
+  [2026-11-28],
+  [Calendar and tasks from Nextcloud on the Pi (section 8): Fossify Calendar and Tasks.org installed from F-Droid; DAVx5 account `Nextcloud` (four calendars, lists Aufgaben and Tickets); the old DAVx5 account `michael.lehnen@gymhueck.de` (LOGINEO, 0 calendars) deleted. DAVx5 and Tailscale exempt from Data saver and battery optimisation. Fossify shows the Nextcloud calendars plus the own Google calendars until the move, default calendar Privat, contact birthdays added.],
 )
