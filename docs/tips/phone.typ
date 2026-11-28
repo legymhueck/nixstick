@@ -196,8 +196,9 @@ the app → *Mobile data* → *Unrestricted data usage*, *App battery usage* = U
 Tailscale went to sleep and DAVx5 could not reach the Pi.
 
 *School page (home screen page 2).* Long-press the Thunderbird widget → *Remove* (only the widget; the app
-stays, it is the mail program for the LOGINEO mailboxes and the tickets). Long-press an empty spot → *Widgets* →
-Fossify Calendar → *Event list* (or *Monthly*) → drop it at the top and pull it to full width and about two
+stays, it is the mail program for the LOGINEO mailboxes and the tickets). Long-press the Fossify Calendar app
+icon → *Widgets* → *Event list* (or *Monthly*) → *Add* (the launcher's own picker, long-press an empty spot →
+*Widgets*, leaves only an empty frame in the top left corner and cannot place it, 2026-11-28) → move it to the top and pull it to full width and about two
 thirds of the height. Optional below it: Tasks.org widget with the list *Tickets*. In the bottom row the school
 apps: Moodle, Untis, Wörterbücher, Thunderbird. Widget colours are set apart from the app's theme: Fossify
 Calendar → Settings → *Widgets* → *Customize widget colors* → *Background color* dark, *Text color* white → *OK*
