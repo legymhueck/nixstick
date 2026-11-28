@@ -26,6 +26,7 @@ in
   # (no traces in firmware, TPM, clock, disks) in traceless.nix, the YubiKey in
   # yubikey.nix, the desktop in nixos-mango/.
   imports = [
+    ./calendar.nix
     ./printing.nix
     ./traceless.nix
     ./yubikey.nix
@@ -53,6 +54,11 @@ in
     # Keep an explicit unfree allowlist instead of allowing the entire package
     # set (see allowedUnfreePkgs above).
     nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) allowedUnfreePkgs;
+    # The one local package, hylki: a copy of the main repo's pkgs/hylki with the
+    # same source pin, so it is downloaded from nixbox-m, never built here.
+    nixpkgs.overlays = [
+      (final: _: { hylki = final.callPackage ../pkgs/hylki/package.nix { src = inputs.hylki-src; }; })
+    ];
     # nh: nicer rebuilds (`nh os switch`) and the weekly garbage collection
     # (replaces nix.gc, they must not both be enabled).
     programs.nh = {

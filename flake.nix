@@ -21,6 +21,13 @@
       url = "github:noctalia-dev/community-plugins";
       flake = false;
     };
+    # hylki (mail client), packaged like the main repo (pkgs/hylki). lock-sync
+    # pins it to the main repo's revision, so the derivation is identical and
+    # comes from the nixbox-m cache instead of a local Rust build.
+    hylki-src = {
+      url = "github:hyprlab/hylki";
+      flake = false;
+    };
     # Prebuilt nix-index database for `, <program>` (comma) and command-not-found.
     nix-index-database = {
       url = "github:nix-community/nix-index-database";

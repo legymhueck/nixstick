@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Update all flake inputs of ~/nixos, then pin nixpkgs and Mango to the
+# Update all flake inputs of ~/nixos, then pin nixpkgs, Mango and hylki to the
 # revisions in the main repo's flake.lock (legymhueck/nixos). Its CI pushes
 # Mango for exactly that lock to the Cachix cache nixbox-m (common/base.nix),
 # so the stick downloads Mango instead of compiling it. Then switches.
@@ -46,13 +46,16 @@ pin() {
 }
 nixpkgs=$(pin nixpkgs)
 mango=$(pin mango)
+hylki=$(pin hylki-src)
 
 echo "==> Updating all inputs"
 nix flake update
-echo "==> Pinning nixpkgs and Mango to the main repo (cached Mango)"
+echo "==> Pinning nixpkgs, Mango and hylki to the main repo (cached builds)"
 echo "    $nixpkgs"
 echo "    $mango"
-nix flake lock --override-input nixpkgs "$nixpkgs" --override-input mango "$mango"
+echo "    $hylki"
+nix flake lock --override-input nixpkgs "$nixpkgs" --override-input mango "$mango" \
+  --override-input hylki-src "$hylki"
 
 if ((switch)); then
   nh os switch
