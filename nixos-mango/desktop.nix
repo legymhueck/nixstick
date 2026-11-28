@@ -229,6 +229,12 @@ in
 
       shell.polkit_agent = true;
       shell.settings_show_advanced = true;
+      # Appointments in the bar and the control center (Nextcloud on the Pi):
+      # the account itself (Custom CalDAV, server
+      # https://rpi.bone-vibes.ts.net/remote.php/dav/, user michael, a Nextcloud
+      # app password) is added once in Settings -> Calendar -> Accounts; Noctalia
+      # keeps it in its overrides and the password in GNOME Keyring.
+      calendar.enabled = true;
       # Let Noctalia generate the GTK/Qt theme files (gtk3, gtk4, qt)
       # so the build produces its theme artifacts without external pins.
       theme.templates = {
