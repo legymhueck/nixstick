@@ -67,8 +67,19 @@ def decode(h):
 
 def clean_title(t):
     t = re.sub(r"\s+", " ", t).strip(" #-")
-    t = re.sub(r"\s*-?\s*Gymnasium Hückelhoven\s*//.*$", "", t).strip(" #-")
-    return t
+    # Status prefixes Regio-IT puts before the title.
+    t = re.sub(
+        r"^(Ihre Unterstützung ist notwendig|Rückfrage|Information)\s*#\s*",
+        "",
+        t,
+        flags=re.IGNORECASE,
+    )
+    # The school's name, at the end or in the middle ("... - Gymnasium Hückelhoven ändern").
+    t = re.sub(r"\s*//.*$", "", t)
+    t = re.sub(r"\s*-?\s*Gymnasium Hückelhoven\s*", " ", t).strip(" #-")
+    # Data protection: no account names in the task.
+    t = re.sub(r"[\w.+-]+@[\w-]+(\.[\w-]+)+", "[Konto]", t)
+    return re.sub(r"\s+", " ", t).strip(" #-")
 
 
 def scan_mailbox(addr, password, since, tickets):
@@ -215,6 +226,11 @@ def run(days, dry):
             if not dry:
                 dav("PUT", url, auth, vtodo(num, t, None))
         elif status == 200:
+            want = "SUMMARY:" + ics_escape((num + " " + t["title"]).strip())
+            if "STATUS:COMPLETED" not in body and not t["done"] and want not in body:
+                print(f"fix  {num} {t['title']}")
+                if not dry:
+                    dav("PUT", url, auth, vtodo(num, t, None))
             if t["done"] and "STATUS:COMPLETED" not in body:
                 print(f"done {num} {t['title']}")
                 completed += 1
