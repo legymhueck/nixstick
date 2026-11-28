@@ -258,8 +258,11 @@ fingerprint                    # enroll a fingerprint (fprintd) -- only on your 
 
 ## Raspberry Pi disk (rpi-platte)
 
-The Pi's disk (`/home/michael/samba`, the old Samba share) as a normal folder `~/rpi-platte`, over SSH: at home
-and anywhere Tailscale is on, also at school. Samba itself (`smb://192.168.2.3/samba`) only works at home.
+Your files on the Pi's disk as a normal folder `~/rpi-platte`, over SSH: at home and anywhere Tailscale is on, also
+at school. It shows exactly what Nextcloud shows as the folder `dateien` (on the Pi `~/samba/dateien`, mounted via
+the bindfs view `~/dateien`, so files you add stay editable in Nextcloud). The services' data (`docker.img`,
+`immich`, `postgres`, `backups`) stays outside and is reached with `ssh rpi`. Samba (`smb://192.168.2.3/samba`,
+whole disk) only works at home.
 
 ```sh
 rpi-platte                     # mount at ~/rpi-platte (adds a bookmark "RPi-Platte" once)
@@ -267,9 +270,7 @@ rpi-platte status              # mounted or not, free space
 rpi-platte aus                 # unmount (close programs that use it first)
 ```
 
-The file chooser hides `immich`, `postgres`, `docker.img` and `backups` (file `.hidden` on the Pi's disk; Ctrl+H
-shows them). They belong to root or to the services and cannot be changed from here anyway; `nextcloud` holds
-your own Nextcloud files and can be used normally (Nextcloud notices changes).
+Nextcloud notices changes made here when the folder is next opened there.
 
 ## Tickets as tasks (tickets-sync)
 

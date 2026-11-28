@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
-# Mount the disk of the Raspberry Pi at home (Tailscale name rpi, mounted there
-# at /home/michael/samba) at ~/rpi-platte via SSHFS: a normal folder for Double
-# Commander, Nautilus and every other program, at home and on the go
-# (Tailscale). Uses the SSH key and the host entry rpi (common/home.nix).
+# Mount your files on the Raspberry Pi at home (Tailscale name rpi) at
+# ~/rpi-platte via SSHFS: a normal folder for Double Commander, Nautilus and
+# every other program, at home and on the go (Tailscale). It shows the same
+# files as the folder "dateien" in Nextcloud: /home/michael/dateien is a bindfs
+# view of /home/michael/samba/dateien that shows everything as michael's and
+# creates new files as www-data, so Nextcloud can still change them.
+# Uses the SSH key and the host entry rpi (common/home.nix).
 # Copied from the main repo nixos; keep both in step.
 #   rpi-platte           # mount (also adds a file chooser bookmark once)
 #   rpi-platte aus       # unmount
 #   rpi-platte status    # mounted or not
-# Do not change the folders nextcloud, immich and postgres: they belong to the
-# services on the Pi (main repo nixos: docs/platten.typ).
 set -euo pipefail
 
 usage() { awk '/^#!\/usr\/bin\/env bash/ { f = 1; next } f && /^#/ { sub(/^# ?/, ""); print; next } f { exit }' "$0"; }
 
 ziel=$HOME/rpi-platte
-quelle=rpi:/home/michael/samba
+quelle=rpi:/home/michael/dateien
 lesezeichen=${XDG_CONFIG_HOME:-$HOME/.config}/gtk-3.0/bookmarks
 
 # Sessions started before the ssh-agent existed do not know its socket.
