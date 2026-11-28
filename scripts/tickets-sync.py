@@ -200,6 +200,13 @@ def run(days, dry):
     for num, t in sorted(tickets.items()):
         url = f"{CALDAV}ticket-{num}.ics"
         status, body = dav("GET", url, auth)
+        if status in (401, 403, 429):
+            # Stop at once: every further try counts as a failed login and
+            # Nextcloud's brute-force protection then throttles this computer.
+            sys.exit(
+                f"Nextcloud refused the login (HTTP {status}): check the app password"
+                " 'tickets-sync' (tickets-sync setup), then try again."
+            )
         if status == 404:
             if t["done"]:
                 continue  # closed before we ever saw it open: no task needed
