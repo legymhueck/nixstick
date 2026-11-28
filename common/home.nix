@@ -14,6 +14,7 @@
     ./mail.nix
     ./neovim.nix
     ./scripts.nix
+    ./tickets.nix
   ];
 
   # Home Manager base settings (the desktop is in nixos-mango/).

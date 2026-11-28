@@ -271,6 +271,19 @@ The file chooser hides `immich`, `postgres`, `docker.img` and `backups` (file `.
 shows them). They belong to root or to the services and cannot be changed from here anyway; `nextcloud` holds
 your own Nextcloud files and can be used normally (Nextcloud notices changes).
 
+## Tickets as tasks (tickets-sync)
+
+Regio-IT tickets (mail from `service@regioit.de` in the LOGINEO mailboxes) become tasks in the Nextcloud list
+Tickets (phone: Tasks.org, PC: Endeavour), with only number and subject. A user timer runs it every 15 minutes;
+the task is completed when the ticket's "wurde abgeschlossen" mail arrives.
+
+```sh
+tickets-sync setup             # once: shows the secret-tool commands (one password per mailbox + Nextcloud)
+tickets-sync --dry-run         # what would change
+tickets-sync                   # run now (the timer does this every 15 minutes)
+systemctl --user list-timers tickets-sync
+```
+
 ## Raspberry Pi backup (pi-sichern)
 
 Same backup as from the main system: plug in the disk `pi-backup`, mount it in the udiskie tray

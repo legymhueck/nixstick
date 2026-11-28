@@ -7,3 +7,4 @@ out/
 
 # compiled Neovim word lists (rebuilt from the .add files)
 *.spl
+__pycache__/
