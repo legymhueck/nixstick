@@ -104,6 +104,10 @@
               "https://rpi.bone-vibes.ts.net/"
             ]
             [
+              "Kalender"
+              "https://rpi.bone-vibes.ts.net/apps/calendar/"
+            ]
+            [
               "Immich"
               "https://rpi.bone-vibes.ts.net:8443/"
             ]
